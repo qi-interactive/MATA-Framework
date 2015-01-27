@@ -1,0 +1,16 @@
+{
+	"name": "mata/mata-framework",
+	"description": "MATA Framework",
+	"keywords": ["mata", "framework"],
+	"homepage": "http://mataframework.com",
+	"type": "library",
+	"minimum-stability": "stable",
+	"require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": "*"
+    },
+    "require-dev": {
+        "yiisoft/yii2-codeception": "*",
+        "yiisoft/yii2-faker": "*"
+    }
+}
