@@ -14,6 +14,6 @@
         "yiisoft/yii2-faker": "*"
     },
     "autoload": {
-        "psr-4": { "mata\\mata-framework\\": "" }
+        "psr-4": { "mata-framework\\": "" }
     }
 }
