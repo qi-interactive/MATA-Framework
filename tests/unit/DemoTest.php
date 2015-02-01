@@ -10,5 +10,4 @@ class VendorTestCase extends \PHPUnit_Framework_TestCase {
 	public function testCheck() {
 		$this->assertTrue(true);
 	}
-
 }
