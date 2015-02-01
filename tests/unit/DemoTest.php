@@ -1,6 +1,7 @@
 <?php
 namespace yiiunit;
 use Yii;
+
 /**
  * This is the base class for all yii framework unit tests, which requires
  * external vendor libraries to function.
