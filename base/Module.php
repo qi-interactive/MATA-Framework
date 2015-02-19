@@ -7,6 +7,10 @@ use yii\base\InvalidConfigException;
 
 abstract class Module extends BaseModule {
 
+	public abstract function getNavigation();
+	
+	public $layout = "@matacms/views/layouts/module"; 
+
 	public function getVersion() {
 		return $this->mataConfig->version;
 	}
