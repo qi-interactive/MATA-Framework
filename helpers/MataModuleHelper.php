@@ -12,6 +12,10 @@ class MataModuleHelper {
 		$modules = \Yii::$app->getModules();
 
 		foreach ($modules as $module) {
+
+			if (is_array($module))
+				$module = new $module["class"](null); // module not initialized
+
 			if (get_class($module) == $class)
 				return $module;
 		}

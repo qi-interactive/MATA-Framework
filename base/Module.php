@@ -44,9 +44,6 @@ abstract class Module extends BaseModule {
 		$assetBundle = $this->getModuleAssetBundle();
 		$assetBundleInstance = $assetBundle->register(\Yii::$app->view);
 
-		// print_r($assetBundleInstance);
-		// exit;
-
 		return $assetBundleInstance->sourcePath . $this->mataConfig->icon;
 	}
 
