@@ -9,6 +9,7 @@ abstract class Module extends BaseModule {
 
 	public abstract function getNavigation();
 	
+	// TODO Cross-reference to matacms, tight coupling!
 	public $layout = "@matacms/views/layouts/module"; 
 
 	public function getVersion() {
