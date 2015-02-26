@@ -7,6 +7,49 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 use ReflectionClass;
 
+/*
+ * Usage:
+ * 
+ * use mata\widgets\DynamicForm;
+ * use mata\helpers\MataDynamicModelHelper; (to create DynamicModel from tableName)
+ *
+ * echo DynamicForm::widget([
+        'model' => new \mata\form\models\Form,
+        // 'model' => MataDynamicModelHelper::generateFromTableName('form_contact'),
+        'fieldAttributes' => [
+            'Name' => [
+                'label' => "Your Name",
+                'fieldType' => "wysiwyg"
+            ],
+            'ReferencedTable' => [
+                'label' => "Referenced Table Name"
+            ],
+            // examples:
+            // 
+            // 'ReferencedTable' => [
+            //  'label' => "Email Address",
+            //  'fieldType' => [
+            //      'textarea' => [
+            //          'params' => ["rows" => 5]
+            //      ]
+            //  ]
+            // ],
+            // 'ReferencedTable' => [
+            //  'label' => "Email Address",
+            //  'fieldType' => [
+            //      'dropDownList' => [
+            //          'params' => ["items" => [1,2,3]]
+            //      ]
+            //  ]
+            // ]
+        ]
+    ]);
+ *
+ *
+ *
+ * 
+ */
+
 class DynamicForm extends \matacms\widgets\ActiveForm {
 
     public $model;
