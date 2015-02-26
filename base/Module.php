@@ -9,6 +9,18 @@ abstract class Module extends BaseModule {
 
 	public abstract function getNavigation();
 	
+	public $mataConfig = [];
+
+	const CONFIG_FILE_NAME = "module-config.json";
+	const DEFAULT_ASSET_BUNDLE = "ModuleAsset";
+
+	private $defaultModuleAssetBundle;
+
+	public function __construct($id, $parent = null, $config = []) {
+		$config["mataConfig"] = $this->getMataConfig();
+		parent::__construct($id, $parent, $config);
+	}
+
 	// TODO Cross-reference to matacms, tight coupling!
 	public $layout = "@matacms/views/layouts/module"; 
 
@@ -26,18 +38,6 @@ abstract class Module extends BaseModule {
 
 	public function getDescription() {
 		return $this->mataConfig->description;
-	}
-
-	public $mataConfig = [];
-
-	const CONFIG_FILE_NAME = "module-config.json";
-	const DEFAULT_ASSET_BUNDLE = "ModuleAsset";
-
-	private $defaultModuleAssetBundle;
-
-	public function __construct($id, $parent = null, $config = []) {
-		$config["mataConfig"] = $this->getMataConfig();
-		parent::__construct($id, $parent, $config);
 	}
 
 	public function getIcon() {
