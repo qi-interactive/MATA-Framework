@@ -14,12 +14,12 @@ class ComposerHelper {
 			return current($includeFiles[$namespace]);
 	}
 
-	public static function getLibraryNamespaceByFolder($folder) {
+	public static function getLibraryNamespaceByDir($dir) {
 		$includeFiles = require(\Yii::getAlias('@vendor') . DIRECTORY_SEPARATOR . "composer"
 			. DIRECTORY_SEPARATOR . "autoload_psr4.php");
 
 		foreach ($includeFiles as $namespace => $value) {
-			if (current($value) == $folder)
+			if (current($value) == $dir)
 				return $namespace;
 		}
 	}

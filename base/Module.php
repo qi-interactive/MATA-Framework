@@ -53,15 +53,20 @@ abstract class Module extends BaseModule {
 		
 		$namespace = str_replace("Module", "", $classInfo->name);
 
-		$libraryDir = ComposerHelper::getLibraryDirByNamespace($namespace);
 
-		if ($libraryDir == null)
-			throw new InvalidConfigException(sprintf("Could not find %s for namespace %s", self::CONFIG_FILE_NAME, $moduleDir));
+		// $libraryDir = ComposerHelper::getLibraryDirByNamespace($namespace);
+
+		$libraryDir = str_replace("Module.php", "", $classInfo->getFileName());
+
+// $libraryDir = ComposerHelper::getLibraryDirByNamespace($namespace);
+
+		// if ($libraryDir == null)
+		// 	throw new InvalidConfigException(sprintf("Could not find library directory for namespace %s", $namespace));
 
 		$configFile = $libraryDir . DIRECTORY_SEPARATOR . self::CONFIG_FILE_NAME;
 
 		if (file_exists($configFile) == false)
-			throw new InvalidConfigException(sprintf("Could not find %s", $configFile));
+			throw new InvalidConfigException(sprintf("Could not find config file %s %s", self::CONFIG_FILE_NAME, $configFile));
 
 		$config = json_decode(file_get_contents($libraryDir . DIRECTORY_SEPARATOR . self::CONFIG_FILE_NAME));
 
