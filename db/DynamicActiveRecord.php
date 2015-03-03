@@ -1,36 +1,76 @@
-<?php
+<?php 
 
-namespace mata\helpers;
+namespace mata\db;
 
 use Yii;
-use mata\db\DynamicActiveRecord;
 use yii\db\Schema;
+use yii\helpers\Inflector;
 
-class MataDynamicModelHelper {
+class DynamicActiveRecord extends \mata\db\ActiveRecord {
 
-	public static function generateFromTableName($tableName, $omitId = true) {
-		if(!empty($tableName)) {
-    		return new DynamicActiveRecord($tableName);
-        }
-        return null;
+	protected static $tableName;
+	private $_rules;
+	private $_attributeLabels;
+
+	public function __construct($tableName)
+	{
+		self::$tableName = $tableName;
+		$this->setupModel($tableName);
+	}
+
+	public static function tableName() {
+		return self::$tableName;
+	}
+
+	public static function setTableName($tableName)
+	{
+		self::$tableName = $tableName;
 	}
 
 	protected static function getDbConnection() {
         return Yii::$app->getDb();
     }
 
-    /**
+	public function rules()
+	{
+		return $this->_rules;
+	}
+
+
+	public function attributeLabels()
+	{
+		return $this->_attributeLabels;
+	}
+
+	private function setupModel($tableName) {
+		$tableSchema = self::getDbConnection()->getTableSchema($tableName);
+		if(!empty($tableSchema->columns)) {
+			$fields = [];
+			foreach ($tableSchema->columns as $column) {
+				// if($column->name == 'Id')
+				// 	continue;
+				$fields[] = $column->name;
+			}
+
+			// Prepare rules
+			$this->_rules = self::generateRulesFromTableSchema($tableSchema);
+
+			// Prepare attributeLabels
+			$this->_attributeLabels = self::generateLabelsFromTableSchema($tableSchema);
+		}
+	}
+
+	/**
      * Generates validation rules for the specified table.
      * @param \yii\db\TableSchema $table the table schema
      * @return array the generated validation rules
      */
-    protected static function generateRulesFromTable($dynamicModel, $tableSchema, $omitId = true)
+    protected static function generateRulesFromTableSchema($tableSchema)
     {
+        $rules = [];
         $types = [];
         $lengths = [];
         foreach ($tableSchema->columns as $column) {
-            if($column->name == 'Id' && $omitId)
-                continue;
             if ($column->autoIncrement) {
                 continue;
             }
@@ -73,10 +113,10 @@ class MataDynamicModelHelper {
         }
         // $rules = [];
         foreach ($types as $type => $columns) {
-            $dynamicModel->addRule($columns, $type);
+            $rules[] = [$columns, $type];
         }
         foreach ($lengths as $length => $columns) {
-            $dynamicModel->addRule($columns, 'string', ['max' => $length]);
+            $rules[] = [$columns, 'string', 'max' => $length];
         }
 
         // Unique indexes rules
@@ -89,19 +129,19 @@ class MataDynamicModelHelper {
                     $attributesCount = count($uniqueColumns);
 
                     if ($attributesCount == 1) {
-                        $dynamicModel->addRule($uniqueColumns[0], 'unique');
+                        $rules[] = [$uniqueColumns[0], 'unique'];
                     } elseif ($attributesCount > 1) {
                         $labels = array_intersect_key($this->generateLabels($tableSchema), array_flip($uniqueColumns));
                         $lastLabel = array_pop($labels);
                         $columnsList = implode("', '", $uniqueColumns);
-                        $dynamicModel->addRule($columnsList, 'unique', ['targetAttribute' => [$columnsList], 'message' => 'The combination of " . implode(', ', $labels) . " and " . $lastLabel . " has already been taken.']);
+                        $rules[] = [$columnsList, 'unique', ['targetAttribute' => [$columnsList], 'message' => 'The combination of " . implode(', ', $labels) . " and " . $lastLabel . " has already been taken.']];
                     }
                 }
             }
         } catch (NotSupportedException $e) {
             // doesn't support unique indexes information...do nothing
         }
-        return $dynamicModel;
+        return $rules;
     }
 
     /**
@@ -109,13 +149,11 @@ class MataDynamicModelHelper {
      * @param \yii\db\TableSchema $table the table schema
      * @return array the generated attribute labels (name => label)
      */
-    protected static function generateLabels($tableSchema)
+    protected static function generateLabelsFromTableSchema($tableSchema)
     {
         $labels = [];
         foreach ($tableSchema->columns as $column) {
-            if ($this->generateLabelsFromComments && !empty($column->comment)) {
-                $labels[$column->name] = $column->comment;
-            } elseif (!strcasecmp($column->name, 'id')) {
+            if (!strcasecmp($column->name, 'id')) {
                 $labels[$column->name] = 'ID';
             } else {
                 $label = Inflector::camel2words($column->name);

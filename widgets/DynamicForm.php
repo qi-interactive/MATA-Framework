@@ -50,9 +50,10 @@ use ReflectionClass;
  * 
  */
 
-class DynamicForm extends \matacms\widgets\ActiveForm {
+class DynamicForm extends \mata\widgets\ActiveForm {
 
     public $model;
+    public $action = '';
     public $fieldAttributes = [];
     public $omitId = true;
     private $modelAttributes;
@@ -101,6 +102,7 @@ class DynamicForm extends \matacms\widgets\ActiveForm {
             }
         }
 
+
         // Generate fields
         foreach($this->modelAttributes as $fieldName => $fieldValue) {
             echo $this->generateActiveField($fieldName);
@@ -122,7 +124,7 @@ class DynamicForm extends \matacms\widgets\ActiveForm {
 
     protected function submitBtns() {
     	echo Html::beginTag('div', ['class'=>'form-group']);
-    	echo Html::submitButton('Create', ['class' => 'btn btn-success']);
+    	echo Html::submitButton($this->options['submitButtonText'], ['class' => 'btn btn-success']);
     	echo Html::endTag('div');
     }
 
@@ -133,6 +135,7 @@ class DynamicForm extends \matacms\widgets\ActiveForm {
      */
     public function generateActiveField($attribute)
     {
+
         if(array_key_exists($attribute, $this->fieldAttributes) && isset($this->fieldAttributes[$attribute]['fieldType'])) {
             $fieldType = $this->fieldAttributes[$attribute]['fieldType'];
             $basicField = $this->field($this->model, $attribute);
@@ -146,7 +149,7 @@ class DynamicForm extends \matacms\widgets\ActiveForm {
             return call_user_func_array(array($basicField, $fieldType), $fieldTypeParams);
         }
 
-        $tableSchema = $this->model->getInstanceTableSchema();
+        $tableSchema = $this->model->getTableSchema();
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
                 return $this->field($this->model, $attribute)->passwordInput();
