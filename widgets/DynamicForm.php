@@ -56,6 +56,7 @@ class DynamicForm extends \mata\widgets\ActiveForm {
     public $action = '';
     public $fieldAttributes = [];
     public $omitId = true;
+
     private $modelAttributes;
 
 	/**
@@ -83,7 +84,7 @@ class DynamicForm extends \mata\widgets\ActiveForm {
         
         // Set custom attribute labels
         if(!empty($this->fieldAttributes)) {
-            $attributeLabels = $this->model->getAttributeLabels();
+            $attributeLabels = $this->model->attributeLabels();
             foreach($this->fieldAttributes as $fieldName => $fieldAttribute) {
                 if(array_key_exists($fieldName, $attributeLabels) && isset($fieldAttribute['label'])) {
                     $this->model->setAttributeLabel($fieldName, $fieldAttribute['label']);
@@ -94,7 +95,6 @@ class DynamicForm extends \mata\widgets\ActiveForm {
         $modelClass = (new ReflectionClass($this->model))->getName();
 
         $this->modelAttributes = $this->model->attributes;
-
         // Remove Id from model attributes
         if($this->omitId) {
             if(array_key_exists('Id', $this->modelAttributes)) {
