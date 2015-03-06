@@ -56,7 +56,6 @@ class DynamicForm extends \mata\widgets\ActiveForm {
     public $action = '';
     public $fieldAttributes = [];
     public $omitId = true;
-
     private $modelAttributes;
 
 	/**

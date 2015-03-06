@@ -74,7 +74,7 @@ class DynamicActiveRecord extends \mata\db\ActiveRecord {
             if ($column->autoIncrement) {
                 continue;
             }
-            if (!$column->allowNull && $column->defaultValue !== null) {
+            if (!$column->allowNull) {
                 $types['required'][] = $column->name;
             }
             switch ($column->type) {
