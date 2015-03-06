@@ -26,7 +26,7 @@ class IncrementalBehavior extends \yii\base\Behavior {
 		$findBy = $this->findBy;
 		$incrementField = $this->incrementField;
 
-		$lastIncrement = $this->owner->find()->select(sprintf("MAX(%s)", $this->incrementField))->where([
+		$lastIncrement = $this->owner->find()->select(sprintf("MAX(`%s`)", $this->incrementField))->where([
 			$findBy => $this->owner->$findBy
 			])->scalar();
 
