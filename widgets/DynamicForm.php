@@ -56,6 +56,7 @@ class DynamicForm extends \mata\widgets\ActiveForm {
     public $action = '';
     public $fieldAttributes = [];
     public $omitId = true;
+    public $autoRenderFields = true;
     private $modelAttributes;
 
 	/**
@@ -80,7 +81,7 @@ class DynamicForm extends \mata\widgets\ActiveForm {
     	if (!empty($this->_fields)) {
     		throw new InvalidCallException('Each beginField() should have a matching endField() call.');
     	}
-        
+
         // Set custom attribute labels
         if(!empty($this->fieldAttributes)) {
             $attributeLabels = $this->model->attributeLabels();
@@ -101,12 +102,13 @@ class DynamicForm extends \mata\widgets\ActiveForm {
             }
         }
 
-
         // Generate fields
-        foreach($this->modelAttributes as $fieldName => $fieldValue) {
-            echo $this->generateActiveField($fieldName);
-        }
-    	
+        if($this->autoRenderFields) {
+            foreach($this->modelAttributes as $fieldName => $fieldValue)
+                echo $this->generateActiveField($fieldName);
+        }        
+        
+
         if ($this->enableClientScript) {
             $id = $this->options['id'];
             $options = Json::encode($this->getClientOptions());
@@ -116,7 +118,8 @@ class DynamicForm extends \mata\widgets\ActiveForm {
             $view->registerJs("jQuery('#$id').yiiActiveForm($attributes, $options);");
         }
 
-        echo $this->submitBtns();
+        if($this->autoRenderFields)
+            echo $this->submitBtns();
 
         echo Html::endForm();
     }
@@ -132,12 +135,12 @@ class DynamicForm extends \mata\widgets\ActiveForm {
      * @param string $attribute
      * @return string
      */
-    public function generateActiveField($attribute)
+    public function generateActiveField($attribute, $options = [])
     {
 
         if(array_key_exists($attribute, $this->fieldAttributes) && isset($this->fieldAttributes[$attribute]['fieldType'])) {
             $fieldType = $this->fieldAttributes[$attribute]['fieldType'];
-            $basicField = $this->field($this->model, $attribute);
+            $basicField = $this->field($this->model, $attribute, $options);
             $fieldTypeParams = [];
             if(is_array($fieldType)) {
                 if(isset($this->fieldAttributes[$attribute]['fieldType'][key($fieldType)]['params'])) {
@@ -151,16 +154,16 @@ class DynamicForm extends \mata\widgets\ActiveForm {
         $tableSchema = $this->model->getTableSchema();
         if ($tableSchema === false || !isset($tableSchema->columns[$attribute])) {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $attribute)) {
-                return $this->field($this->model, $attribute)->passwordInput();
+                return $this->field($this->model, $attribute, $options)->passwordInput();
             } else {
-                return $this->field($this->model, $attribute);
+                return $this->field($this->model, $attribute, $options);
             }
         }
         $column = $tableSchema->columns[$attribute];
         if ($column->phpType === 'boolean') {
-            return $this->field($this->model, $attribute)->checkbox();
+            return $this->field($this->model, $attribute, $options)->checkbox();
         } elseif ($column->type === 'text') {
-            return $this->field($this->model, $attribute)->textarea(['rows' => 6]);
+            return $this->field($this->model, $attribute, $options)->textarea(['rows' => 6]);
         } else {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
                 $input = 'passwordInput';
@@ -172,11 +175,11 @@ class DynamicForm extends \mata\widgets\ActiveForm {
                 foreach ($column->enumValues as $enumValue) {
                     $dropDownOptions[$enumValue] = Inflector::humanize($enumValue);
                 }
-                return $this->field($this->model, $attribute)->dropDownList(preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)), ['prompt' => '']);
+                return $this->field($this->model, $attribute, $options)->dropDownList(preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)), ['prompt' => '']);
             } elseif ($column->phpType !== 'string' || $column->size === null) {
-                return $this->field($this->model, $attribute)->$input();
+                return $this->field($this->model, $attribute, $options)->$input();
             } else {
-                return $this->field($this->model, $attribute)->$input(['maxlength' => $column->size]);
+                return $this->field($this->model, $attribute, $options)->$input(['maxlength' => $column->size]);
             }
         }
     }
