@@ -2,6 +2,6 @@
 
 namespace mata\web\module;
 
-class Controller extends mata\web\Controller {
+class Controller extends \mata\web\Controller {
 
 }
