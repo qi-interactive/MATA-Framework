@@ -78,8 +78,5 @@ class DynamicModel extends \yii\base\DynamicModel {
         }
     }
 
-    public function autoCompleteData() {
-        return [];
-    }
 
 }
