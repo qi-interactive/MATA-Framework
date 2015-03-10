@@ -6,6 +6,7 @@ use Yii;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use ReflectionClass;
+use yii\helpers\ArrayHelper;
 
 /*
  * Usage:
@@ -68,6 +69,11 @@ class DynamicForm extends \mata\widgets\ActiveForm {
 		if (!isset($this->options['id'])) {
 			$this->options['id'] = $this->getId();
 		}
+
+        $this->options = ArrayHelper::merge([
+            "submitButtonText" => "Submit"
+            ], $this->options);
+
 		echo Html::beginForm($this->action, $this->method, $this->options);
 	}
 
