@@ -11,10 +11,11 @@ class DynamicActiveRecord extends \mata\db\ActiveRecord {
 	protected static $tableName;
 	private $_rules;
 	private $_attributeLabels;
+    private $_attributes;
 
 	public function __construct($tableName)
 	{
-		self::$tableName = $tableName;
+        self::$tableName = $tableName;
 		$this->setupModel($tableName);
 	}
 
@@ -36,6 +37,11 @@ class DynamicActiveRecord extends \mata\db\ActiveRecord {
 		return $this->_rules;
 	}
 
+    public function attributes()
+    {
+        return $this->_attributes;
+    }
+
 
 	public function attributeLabels()
 	{
@@ -50,8 +56,9 @@ class DynamicActiveRecord extends \mata\db\ActiveRecord {
 				// if($column->name == 'Id')
 				// 	continue;
 				$fields[] = $column->name;
-			}
+			}           
 
+            $this->_attributes = $fields;
 			// Prepare rules
 			$this->_rules = self::generateRulesFromTableSchema($tableSchema);
 
