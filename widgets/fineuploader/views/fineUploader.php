@@ -43,7 +43,7 @@ use yii\web\View;
 				},
 				uploadSuccess: {
 					customHeaders: {'X-CSRF-Token':'" . \Yii::$app->request->getCsrfToken() . "'},
-					endpoint: '".$widget->uploadSuccessEndpoint."'
+					endpoint: '" . $widget->uploadSuccessEndpoint . "'
 				},
 				template: 'qq-simple-thumbnails-template',
 				autoUpload: true,

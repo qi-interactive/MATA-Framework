@@ -87,8 +87,7 @@ class FineUploader extends InputWidget {
     /**
      * @inheritdoc
      */
-    public function run()
-    {
+    public function run() {
         $this->selector = '#' . $this->htmlOptions['id'];
 
         $this->registerPlugin();
@@ -96,15 +95,14 @@ class FineUploader extends InputWidget {
 
         echo $this->render($this->view, [
             "widget" => $this,
-            "mediaModel" => Media::find()->forItem($this->model)->one()
+            "mediaModel" => Media::find()->forItem($this->model, $this->attribute)->one()
             ]);
     }
 
     /**
      * Registers plugin and the related events
      */
-    protected function registerPlugin()
-    {
+    protected function registerPlugin() {
         $view = $this->getView();
         FineUploaderAsset::register($view);
     }
