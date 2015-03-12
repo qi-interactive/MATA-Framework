@@ -43,7 +43,7 @@ use yii\web\View;
 				},
 				uploadSuccess: {
 					customHeaders: {'X-CSRF-Token':'" . \Yii::$app->request->getCsrfToken() . "'},
-					endpoint: '/mata-cms/media/s3/upload-successful?documentId=" . urlencode($widget->model->getDocumentId()) ."'
+					endpoint: '".$widget->uploadSuccessEndpoint."'
 				},
 				template: 'qq-simple-thumbnails-template',
 				autoUpload: true,
@@ -54,19 +54,6 @@ use yii\web\View;
 			// 	// form.submit();	
 			// }, 800)
 
-			}).on('complete', function(a, id, name, uploadSuccessResponse, t, c) {
-				if (uploadSuccessResponse.Id == null) {
-					alert('Media Upload failed. Please get in touch with your support team.');
-				}
-
-				var el = $(\"[name='" . Html::getInputName($widget->model, $widget->attribute) . "']\");
-
-				if (el.length == 0) {
-					el = $(\"<input type='hidden' name='" . Html::getInputName($widget->model, $widget->attribute) . "' />\");
-					$('" . $widget->selector . "').append(el)
-				}
-
-				el.val(uploadSuccessResponse.Id)
 			}).on('submit', function() {
 				$('" . $widget->selector . " .current-media').remove();
 				$('" . $widget->selector . " .qq-upload-success').remove();
@@ -93,7 +80,6 @@ use yii\web\View;
 		"class" => "current-media"
 		)); ?>
 	<?php endif; ?>
-	<?php echo Html::activeHiddenInput($widget->model, $widget->attribute); ?>
 	<div class="fine-uploader"></div>
 
 </div>
