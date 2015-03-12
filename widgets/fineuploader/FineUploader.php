@@ -63,6 +63,7 @@ class FineUploader extends InputWidget {
     public $s3Folder;
 
     public $uploadSuccessEndpoint;
+    public $view = 'fineUploader';
 
     public function init(){
         parent::init();
@@ -93,7 +94,7 @@ class FineUploader extends InputWidget {
         $this->registerPlugin();
         $this->registerJS();
 
-        echo $this->render("fineUploader", [
+        echo $this->render($this->view, [
             "widget" => $this,
             "mediaModel" => Media::find()->forItem($this->model)->one()
             ]);
