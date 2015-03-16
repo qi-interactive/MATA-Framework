@@ -51,7 +51,7 @@ use yii\helpers\ArrayHelper;
  * 
  */
 
-class DynamicForm extends \mata\widgets\ActiveForm {
+class DynamicForm extends \matacms\widgets\ActiveForm {
 
     public $model;
     public $action = '';
