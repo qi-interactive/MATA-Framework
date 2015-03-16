@@ -24,6 +24,7 @@ use yii\web\View;
 						return '" . $widget->s3Folder . "/' + filename;
 					}
 				},
+				multiple: " . ($widget->options['multiple'] ? 'true' : 'false') . ",
 			// Move to module settings
 				validation: {
 					allowedExtensions: ['jpg', 'jpeg', 'gif', 'png', 'pdf', 'ico'],

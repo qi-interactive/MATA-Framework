@@ -29,7 +29,9 @@ class FineUploader extends InputWidget {
      */
     public $htmlOptions = [];
 
-    public $options = array();
+    public $options = [
+        'multiple' => true
+    ];
     public $events = array();
     public $default_events = array(
         'autoRetry'=>'',
