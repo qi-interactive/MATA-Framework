@@ -29,7 +29,7 @@ class FineUploader extends InputWidget {
      */
     public $htmlOptions = [];
 
-    public $options = [
+    public $defaultOptions = [
         'multiple' => true
     ];
     public $events = array();
@@ -69,6 +69,8 @@ class FineUploader extends InputWidget {
 
     public function init(){
         parent::init();
+        $this->options=array_merge($this->defaultOptions, $this->options);
+
         $this->events=array_merge($this->default_events, $this->events);
 
         if (!isset($this->htmlOptions['id'])) {
