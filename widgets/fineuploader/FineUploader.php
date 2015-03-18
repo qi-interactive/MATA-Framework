@@ -78,7 +78,7 @@ class FineUploader extends InputWidget {
         }
 
         if(empty($this->uploadSuccessEndpoint))
-            $this->uploadSuccessEndpoint = '/mata-cms/media/s3/upload-successful?documentId=' . urlencode($this->model->getDocumentId());
+            $this->uploadSuccessEndpoint = '/mata-cms/media/s3/upload-successful?documentId=' . urlencode($this->model->getDocumentId($this->attribute));
 
         $this->s3Key = trim(KeyValue::findbyKey(self::S3_KEY));
         $this->s3Secret = trim(KeyValue::findbyKey(self::S3_SECRET));
