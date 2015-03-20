@@ -45,6 +45,15 @@ use yii\helpers\ArrayHelper;
             // ]
         ]
     ]);
+
+    If a field is to be ommited, pass false as the value: 
+
+    echo DynamicForm::widget([
+        'model' => $model,
+        'fieldAttributes' => [
+            'Grouping' => false
+        ]
+        ]);
  *
  *
  *
@@ -74,8 +83,8 @@ class DynamicForm extends \matacms\widgets\ActiveForm {
             "submitButtonText" => "Submit"
             ], $this->options);
 
-		echo Html::beginForm($this->action, $this->method, $this->options);
-	}
+        echo Html::beginForm($this->action, $this->method, $this->options);
+    }
 
     /**
      * Runs the widget.
@@ -141,8 +150,10 @@ class DynamicForm extends \matacms\widgets\ActiveForm {
      * @param string $attribute
      * @return string
      */
-    public function generateActiveField($attribute, $options = [])
-    {
+    public function generateActiveField($attribute, $options = []) {
+
+        if (isset($this->fieldAttributes[$attribute]) && $this->fieldAttributes[$attribute] == false)
+            return;
 
         if(array_key_exists($attribute, $this->fieldAttributes) && isset($this->fieldAttributes[$attribute]['fieldType'])) {
             $fieldType = $this->fieldAttributes[$attribute]['fieldType'];
