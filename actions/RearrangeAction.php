@@ -9,6 +9,9 @@ class RearrangeAction extends \yii\base\Action {
 
 	public $model;
 	public $onValidationErrorHandler;
+	public $modalTitle;
+	public $orderColumnName;
+	public $url;
 
 	public function init() {
 		if(empty($this->onValidationErrorHandler)) {
@@ -22,13 +25,21 @@ class RearrangeAction extends \yii\base\Action {
 	public function run() {
 		// Load data and validate
 		try {
-			print_r(Yii::$app->request->post());
+			$data = Yii::$app->request->post();
+			$pks = $data['pks'];
+			$orderColumnName = $this->orderColumnName;
 
-		} catch (ValidationException $e) {
+			foreach($pks as $index => $pk) {
+				$model = $this->model->findOne($pk);
+				$model->$orderColumnName = $index+1;
+				if(!$model->save())
+					throw new NotFoundHttpException($model->getTopError());
+			}
+			echo "OK";
+		} catch (NotFoundHttpException $e) {
 			call_user_func_array($this->onValidationErrorHandler, [$this->model, $e]);
+			return;
 		}
-
-		echo "OK";
 		
 	}
 

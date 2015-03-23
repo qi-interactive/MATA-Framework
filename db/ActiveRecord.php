@@ -6,21 +6,21 @@ class ActiveRecord extends \yii\db\ActiveRecord {
 
 	public function getTopError() {
 		if ($this->hasErrors()) {
-		    $errors = $this->getErrors();
-		    return current(current($errors));
+			$errors = $this->getErrors();
+			return current(current($errors));
 		}
 	}
 
 	public function getDocumentId($attribute = null) {
 
-	    $pk = $this->primaryKey;
+		$pk = $this->primaryKey;
 
-	    if (is_array($pk))
-	        $pk = implode('-', $pk);        	
+		if (is_array($pk))
+			$pk = implode('-', $pk);        	
 
-	    if ($attribute != null)
-            $pk .= "::" . $attribute;
+		if ($attribute != null)
+			$pk .= "::" . $attribute;
 
-	    return sprintf("%s-%s", get_class($this), $pk);
+		return sprintf("%s-%s", get_class($this), $pk);
 	}
 }
