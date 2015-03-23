@@ -15,8 +15,11 @@ class ActiveRecord extends \yii\db\ActiveRecord {
 
 	    $pk = $this->primaryKey;
 
+	    if(empty($pk) && $this->isNewRecord)
+	    	$pk = uniqid('tmp_');
+
 	    if (is_array($pk))
-	        $pk = implode('-', $pk);
+	        $pk = implode('-', $pk);        	
 
 	    if ($attribute != null)
             $pk .= "::" . $attribute;
