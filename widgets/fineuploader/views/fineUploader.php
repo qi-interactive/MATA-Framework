@@ -55,6 +55,11 @@ use yii\web\View;
 			// 	// form.submit();	
 			// }, 800)
 
+			}).on('complete', function(a, id, name, uploadSuccessResponse, t, c) {
+				if (uploadSuccessResponse.Id == null) {
+					alert('Media Upload failed. Please get in touch with your support team.');
+				}
+				" . $widget->events['complete'] . "
 			}).on('submit', function() {
 				$('" . $widget->selector . " .current-media').remove();
 				$('" . $widget->selector . " .qq-upload-success').remove();
