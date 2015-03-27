@@ -10,8 +10,14 @@ class ComposerHelper {
 		$includeFiles = require(\Yii::getAlias('@vendor') . DIRECTORY_SEPARATOR . "composer"
 			. DIRECTORY_SEPARATOR . "autoload_psr4.php");
 
-		if (array_key_exists($namespace, $includeFiles))
-			return current($includeFiles[$namespace]);
+		if (array_key_exists($namespace, $includeFiles)) {
+			foreach($includeFiles[$namespace] as $autoloadDirectory) {
+				if(!file_exists($autoloadDirectory))
+					continue;
+				return $autoloadDirectory;
+			}
+			
+		}
 	}
 
 	public static function getLibraryNamespaceByDir($dir) {
