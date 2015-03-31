@@ -132,13 +132,13 @@ class DynamicActiveRecord extends \mata\db\ActiveRecord {
             $uniqueIndexes = $db->getSchema()->findUniqueIndexes($tableSchema);
             foreach ($uniqueIndexes as $uniqueColumns) {
                 // Avoid validating auto incremental columns
-                if (!$this->isColumnAutoIncremental($tableSchema, $uniqueColumns)) {
+                if (!self::isColumnAutoIncremental($tableSchema, $uniqueColumns)) {
                     $attributesCount = count($uniqueColumns);
 
                     if ($attributesCount == 1) {
                         $rules[] = [$uniqueColumns[0], 'unique'];
                     } elseif ($attributesCount > 1) {
-                        $labels = array_intersect_key($this->generateLabels($tableSchema), array_flip($uniqueColumns));
+                        $labels = array_intersect_key(self::generateLabels($tableSchema), array_flip($uniqueColumns));
                         $lastLabel = array_pop($labels);
                         $columnsList = implode("', '", $uniqueColumns);
                         $rules[] = [$columnsList, 'unique', ['targetAttribute' => [$columnsList], 'message' => 'The combination of " . implode(', ', $labels) . " and " . $lastLabel . " has already been taken.']];
@@ -172,6 +172,17 @@ class DynamicActiveRecord extends \mata\db\ActiveRecord {
         }
 
         return $labels;
+    }
+
+    protected static function isColumnAutoIncremental($table, $columns)
+    {
+        foreach ($columns as $column) {
+            if (isset($table->columns[$column]) && $table->columns[$column]->autoIncrement) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }
