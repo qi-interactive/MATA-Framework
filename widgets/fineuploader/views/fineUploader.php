@@ -79,9 +79,11 @@ use yii\web\View;
 <!-- Fine Uploader DOM Element
 	====================================================================== -->
 	<?php
-
+	$mediaValue = '';
 	if ($mediaModel): ?>
-	<?php echo Html::img($mediaModel->URI, array(
+	<?php 
+	$mediaValue = $mediaModel->DocumentId;
+	echo Html::img($mediaModel->URI, array(
 		"style" => "width: 100px",
 		"class" => "current-media"
 		)); ?>
@@ -123,5 +125,6 @@ use yii\web\View;
 					<span class="qq-upload-status-text-selector qq-upload-status-text"></span>
 				</li>
 			</ul>
+			<input type="hidden" name="Media[]" id="<?php echo \yii\helpers\Html::getInputId($widget->model, $widget->attribute) ?>" value="<?= $mediaValue ?>">
 		</div>
 	</script>
