@@ -60,10 +60,17 @@ use yii\web\View;
 					alert('Media Upload failed. Please get in touch with your support team.');
 				}
 				" . $widget->events['complete'] . "
-			}).on('submit', function() {
-				$('" . $widget->selector . " .current-media').remove();
-				$('" . $widget->selector . " .qq-upload-success').remove();
-			});
+			}).on('progress', function(event, id, fileName, loaded, total) {
+
+				$('.qq-upload-spinner').css({
+					'opacity': 1, 
+					width : ((loaded/total)*100) + '%'
+				});
+
+}).on('submit', function() {
+	$('" . $widget->selector . " .current-media').remove();
+	$('" . $widget->selector . " .qq-upload-success').remove();
+});
 
 		// form.on('submit.manualUploader', function() {
 		// 	$('#" .  $widget->selector . " #current-media').remove();
