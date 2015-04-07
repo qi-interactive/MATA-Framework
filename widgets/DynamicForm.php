@@ -161,10 +161,18 @@ class DynamicForm extends \matacms\widgets\ActiveForm {
             $fieldTypeParams = [];
             if(is_array($fieldType)) {
                 if(isset($this->fieldAttributes[$attribute]['fieldType'][key($fieldType)]['params'])) {
-                    $fieldTypeParams[] = $this->fieldAttributes[$attribute]['fieldType'][key($fieldType)]['params'];
+                    $params = $this->fieldAttributes[$attribute]['fieldType'][key($fieldType)]['params'];
+                    if(is_array($params)) {
+                        foreach($params as $param)
+                            $fieldTypeParams[] = $param;
+                    } else {
+                        $fieldTypeParams[] = $params;
+                    }
+                    
                 }
                 $fieldType = key($fieldType);
             }
+
             return call_user_func_array(array($basicField, $fieldType), $fieldTypeParams);
         }
 
