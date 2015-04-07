@@ -2,6 +2,8 @@
 
 namespace mata\db;
 
+use mata\base\DocumentId;
+
 class ActiveRecord extends \yii\db\ActiveRecord {
 
 	public function getTopError() {
@@ -11,16 +13,25 @@ class ActiveRecord extends \yii\db\ActiveRecord {
 		}
 	}
 
-	public function getDocumentId($attribute = null) {
+	public function __get($name) {
+	     if ($name == "DocumentId")
+	         return new DocumentId($this->getAttribute("DocumentId"));
 
-		$pk = $this->primaryKey;
+	     return parent::__get($name);
+	 }
 
-		if (is_array($pk))
-			$pk = implode('-', $pk);        	
+	 public function getDocumentId($attribute = null) {
 
-		if ($attribute != null)
-			$pk .= "::" . $attribute;
+	     $pk = $this->primaryKey;
 
-		return sprintf("%s-%s", get_class($this), $pk);
-	}
+	     if (is_array($pk))
+	         $pk = implode('-', $pk);            
+
+	     if ($attribute != null)
+	         $pk .= "::" . $attribute;
+
+	     return new DocumentId(sprintf("%s-%s", get_class($this), $pk));
+	 }
+
+
 }

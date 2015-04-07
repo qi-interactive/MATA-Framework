@@ -18,32 +18,35 @@ class MataModuleHelper {
 			if (is_array($module))
 				$module = new $module["class"]($id); // module not initialized
 
-			if (get_class($module) == $class)
-				return $module;
+			if (is_string($module))
+				$module = new $module($id); // module not initialized
+
+				if (get_class($module) == $class)
+					return $module;
+			}
+		}
+
+		public static function getModuleNamespaceByDir($dir) {
+			$moduleFile = ComposerHelper::getLibraryNamespaceByDir($dir);
+
+			if ($moduleFile == null) {
+
+				$dir =  $dir . DIRECTORY_SEPARATOR . "Module.php";
+				$modules = \Yii::$app->getModules();
+
+				foreach ($modules as $module) {
+
+					if (is_array($module))
+						$module = self::getModuleByClass($module["class"]);
+
+					$reflector = new \ReflectionClass($module);
+
+					if ($reflector->getFileName() == $dir) {
+						return $reflector->getNamespaceName() . "\\";
+					}
+				}
+			}	
+
+			return $moduleFile;	
 		}
 	}
-
-	public static function getModuleNamespaceByDir($dir) {
-		$moduleFile = ComposerHelper::getLibraryNamespaceByDir($dir);
-
-		if ($moduleFile == null) {
-
-			$dir =  $dir . DIRECTORY_SEPARATOR . "Module.php";
-			$modules = \Yii::$app->getModules();
-
-			foreach ($modules as $module) {
-
-				if (is_array($module))
-					$module = self::getModuleByClass($module["class"]);
-
-				$reflector = new \ReflectionClass($module);
-
-				if ($reflector->getFileName() == $dir) {
-					return $reflector->getNamespaceName() . "\\";
-				}
-			}
-		}	
-
-		return $moduleFile;	
-	}
-}

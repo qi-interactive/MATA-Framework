@@ -2,15 +2,20 @@
 
 namespace mata\helpers;
 
-class StringHelper
-{
-	public static function startsWith($haystack, $needle) 
-	{
-	    return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
+class StringHelper extends \yii\helpers\StringHelper {
+
+	/**
+	 * Works like ::truncate, but it will then get the last 
+	 * occurence of the $character and truncate further. 
+	 * 
+	 * Useful when truncating to a whole word. 
+	 */ 
+	public function truncateToCharacter($string, $length, $character=' ', $suffix = '...', $encoding = null, $asHtml = false) {
+		$truncated = self::truncate($string, $length, $suffix, $encoding);
+
+		return substr($truncated, 0, strrpos($truncated, $character, -1));
+
 	}
 
-	public static function endsWith($haystack, $needle) 
-	{
-	    return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== FALSE);
-	}
+
 }
