@@ -11,8 +11,7 @@ class StringHelper extends \yii\helpers\StringHelper {
 	 * Useful when truncating to a whole word. 
 	 */ 
 	public function truncateToCharacter($string, $length, $character=' ', $suffix = '...', $encoding = null, $asHtml = false) {
-		$truncated = self::truncate($string, $length, $suffix, $encoding);
-
+		$truncated = self::truncate($string, $length, $suffix, $encoding, $asHtml);
 		return substr($truncated, 0, strrpos($truncated, $character, -1));
 
 	}
