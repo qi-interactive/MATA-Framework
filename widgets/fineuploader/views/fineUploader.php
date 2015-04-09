@@ -9,6 +9,8 @@ use yii\web\View;
 
 	<?php 
 
+	$templateId = 'qq-simple-thumbnails-template-'.$widget->id;
+
 	$this->registerJs("
 		$(document).ready(function() {
 
@@ -46,7 +48,7 @@ use yii\web\View;
 					customHeaders: {'X-CSRF-Token':'" . \Yii::$app->request->getCsrfToken() . "'},
 					endpoint: '" . $widget->uploadSuccessEndpoint . "'
 				},
-				template: 'qq-simple-thumbnails-template',
+				template: '$templateId',
 				autoUpload: true,
 			}).on('allComplete', function() {
 			// setTimeout(function() {
@@ -101,7 +103,7 @@ use yii\web\View;
 <!-- Fine Uploader template
 	====================================================================== -->
 
-	<script type="text/template" id="qq-simple-thumbnails-template">
+	<script type="text/template" id="<?= $templateId ?>">
 		<div class="qq-uploader-selector qq-uploader">
 
 
