@@ -16,5 +16,11 @@ class StringHelper extends \yii\helpers\StringHelper {
 
 	}
 
+	public static function renderStringWithoutOuterParagraph($text) {
+		$text = preg_replace('/<p>/i','', $text, 1);
+		$text = preg_replace('/<\/p>/i','', $text, -1);
+		echo $text;
+	}
+
 
 }
