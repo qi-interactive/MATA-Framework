@@ -11,6 +11,8 @@ abstract class Module extends BaseModule {
 	
 	public $mataConfig = [];
 
+	public $canShowInNavigation = true;
+
 	const CONFIG_FILE_NAME = "module-config.json";
 	const DEFAULT_ASSET_BUNDLE = "ModuleAsset";
 
@@ -28,8 +30,18 @@ abstract class Module extends BaseModule {
 		return $this->mataConfig->version;
 	}
 
+	private function getDefaultConfig() {
+		return [
+			'class' => get_class($this)
+		];
+	}
+
+	public function getConfig() {
+		return $this->getDefaultConfig();
+	}
+
 	public function canShowInNavigation() {
-		return true;
+		return $this->canShowInNavigation;
 	}
 
 	public function getName() {
