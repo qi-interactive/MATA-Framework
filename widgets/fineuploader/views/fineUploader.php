@@ -108,32 +108,37 @@ use yii\web\View;
 
 
 			<div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
-				<span>Drop files here to upload</span>
+				<span>DROP your file here to upload</span>
 			</div>
+
 			<div class="qq-upload-button-selector qq-upload-button">
-				<div>Upload a file</div>
+				<div class="add-media-inner-wrapper"> <div class="hi-icon-effect-2">
+					<div class="hi-icon hi-icon-cog"></div>
+				</div> <span> CLICK or DRAG & DROP </br> to upload a file</span>
 			</div>
-			<span class="qq-drop-processing-selector qq-drop-processing">
-				<span>Processing dropped files...</span>
-				<span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
-			</span>
-			<ul class="qq-upload-list-selector qq-upload-list">
-				<li>
-					<div class="qq-progress-bar-container-selector">
-						<div class="qq-progress-bar-selector qq-progress-bar"></div>
-					</div>
-					<span class="qq-upload-spinner-selector qq-upload-spinner"></span>
-					<img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale>
-					<span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
-					<span class="qq-upload-file-selector qq-upload-file"></span>
-					<input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
-					<span class="qq-upload-size-selector qq-upload-size"></span>
-					<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Cancel</a>
-					<a class="qq-upload-retry-selector qq-upload-retry" href="#">Retry</a>
-					<a class="qq-upload-delete-selector qq-upload-delete" href="#">Delete</a>
-					<span class="qq-upload-status-text-selector qq-upload-status-text"></span>
-				</li>
-			</ul>
-			<input type="hidden" name="Media[]" id="<?php echo \yii\helpers\Html::getInputId($widget->model, $widget->attribute) ?>" value="<?= $mediaValue ?>">
 		</div>
-	</script>
+
+		<span class="qq-drop-processing-selector qq-drop-processing">
+			<span>Processing dropped files...</span>
+			<span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+		</span>
+		<ul class="qq-upload-list-selector qq-upload-list">
+			<li>
+				<div class="qq-progress-bar-container-selector">
+					<div class="qq-progress-bar-selector qq-progress-bar"></div>
+				</div>
+				<span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+				<img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale>
+				<span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
+				<span class="qq-upload-file-selector qq-upload-file"></span>
+				<input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+				<span class="qq-upload-size-selector qq-upload-size"></span>
+				<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Cancel</a>
+				<a class="qq-upload-retry-selector qq-upload-retry" href="#">Retry</a>
+				<a class="qq-upload-delete-selector qq-upload-delete" href="#">Delete</a>
+				<span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+			</li>
+		</ul>
+		<input type="hidden" name="Media[]" id="<?php echo \yii\helpers\Html::getInputId($widget->model, $widget->attribute) ?>" value="<?= $mediaValue ?>">
+	</div>
+</script>
