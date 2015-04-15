@@ -128,17 +128,31 @@ use yii\web\View;
 					<div class="qq-progress-bar-selector qq-progress-bar"></div>
 				</div>
 				<span class="qq-upload-spinner-selector qq-upload-spinner"></span>
-				<img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale>
-				<span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
-				<span class="qq-upload-file-selector qq-upload-file"></span>
-				<input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
-				<span class="qq-upload-size-selector qq-upload-size"></span>
-				<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Cancel</a>
-				<a class="qq-upload-retry-selector qq-upload-retry" href="#">Retry</a>
-				<a class="qq-upload-delete-selector qq-upload-delete" href="#">Delete</a>
-				<span class="qq-upload-status-text-selector qq-upload-status-text"></span>
-			</li>
-		</ul>
-		<input type="hidden" name="Media[]" id="<?php echo \yii\helpers\Html::getInputId($widget->model, $widget->attribute) ?>" value="<?= $mediaValue ?>">
-	</div>
-</script>
+
+				<div class="grid" data-item-id="'.$carouselItem->Id.'">
+					<figure class="effect-winston"><div class="img-container">
+						<img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale> </div>
+						<figcaption>
+							<div class="caption-text"><span> Sample caption fade out if longer</span><div class="fadding-container"> </div> </div>
+							<p>
+								<a href="#" class="edit-media" data-title="Edit Media" data-url="" data-source="" data-toggle="modal" data-target="#media-modal">
+									<span></span></a>
+									<a href="#" class="delete-media" data-url=""><span></span></a>
+								</p>
+							</figcaption>           
+						</figure>
+					</div>
+
+					<span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
+					<span class="qq-upload-file-selector qq-upload-file"></span>
+					<input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+					<span class="qq-upload-size-selector qq-upload-size"></span>
+					<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Cancel</a>
+					<a class="qq-upload-retry-selector qq-upload-retry" href="#">Retry</a>
+					<a class="qq-upload-delete-selector qq-upload-delete" href="#">Delete</a>
+					<span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+				</li>
+			</ul>
+			<input type="hidden" name="Media[]" id="<?php echo \yii\helpers\Html::getInputId($widget->model, $widget->attribute) ?>" value="<?= $mediaValue ?>">
+		</div>
+	</script>
