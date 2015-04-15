@@ -129,9 +129,9 @@ use yii\web\View;
 				</div>
 				<span class="qq-upload-spinner-selector qq-upload-spinner"></span>
 
-				<div class="grid" data-item-id="'.$carouselItem->Id.'">
+				<div class="grid-item" data-item-id="'.$carouselItem->Id.'">
 					<figure class="effect-winston"><div class="img-container">
-						<img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale> </div>
+						<img class="qq-thumbnail-selector" qq-server-scale> </div>
 						<figcaption>
 							<div class="caption-text"><span> Sample caption fade out if longer</span><div class="fadding-container"> </div> </div>
 							<p>
