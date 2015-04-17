@@ -67,17 +67,23 @@ use yii\web\View;
 					$('li[qq-file-id=' + id + ']').remove();
 					$('input#' + inputFileId).val('');
 				});
-			}).on('progress', function(event, id, fileName, loaded, total) {
 
-				$('.qq-upload-spinner').css({
-					'opacity': 1, 
-					width : ((loaded/total)*100) + '%'
-				});
+}).on('progress', function(event, id, fileName, loaded, total) {
+
+	$('.qq-upload-spinner').css({
+		'opacity': 1, 
+		width : ((loaded/total)*100) + '%'
+	});
+
+if($('.qq-upload-spinner')[0].style.width == '100%')
+	$('.qq-upload-spinner').addClass('success');
 
 }).on('submit', function() {
 	$('" . $widget->selector . " .current-media').remove();
 	$('" . $widget->selector . " .qq-upload-success').remove();
+
 });
+
 
 		// form.on('submit.manualUploader', function() {
 		// 	$('#" .  $widget->selector . " #current-media').remove();
@@ -141,21 +147,21 @@ use yii\web\View;
 							<p>
 								<a href="#" class="delete-file"><span></span></a>
 							</p>
-							</figcaption>           
-						</figure>
-					</div>
-					<!--
-					<span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
-					<span class="qq-upload-file-selector qq-upload-file"></span>
-					<input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
-					<span class="qq-upload-size-selector qq-upload-size"></span>
-					<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Cancel</a>
-					<a class="qq-upload-retry-selector qq-upload-retry" href="#">Retry</a>
-					<a class="qq-upload-delete-selector qq-upload-delete" href="#">Delete</a>
-					<span class="qq-upload-status-text-selector qq-upload-status-text"></span>
-					-->
-				</li>
-			</ul>
-			<input type="hidden" name="Media[]" id="<?php echo \yii\helpers\Html::getInputId($widget->model, $widget->attribute) ?>" value="<?= $mediaValue ?>">
-		</div>
-	</script>
+						</figcaption>           
+					</figure>
+				</div>
+				<!--
+				<span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
+				<span class="qq-upload-file-selector qq-upload-file"></span>
+				<input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+				<span class="qq-upload-size-selector qq-upload-size"></span>
+				<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Cancel</a>
+				<a class="qq-upload-retry-selector qq-upload-retry" href="#">Retry</a>
+				<a class="qq-upload-delete-selector qq-upload-delete" href="#">Delete</a>
+				<span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+			-->
+		</li>
+	</ul>
+	<input type="hidden" name="Media[]" id="<?php echo \yii\helpers\Html::getInputId($widget->model, $widget->attribute) ?>" value="<?= $mediaValue ?>">
+</div>
+</script>
