@@ -27,60 +27,61 @@ use yii\web\View;
 
 						$.ajax({
 							type: 'POST',
-							url: '/mata-cms/media/s3/set-random-file-name',
-							data: {name: filename},
-							success: function(data) {
-								var result = '" . $widget->s3Folder . "/' + data.key;
-								keyRetrieval.success(result); 
-							},
-							error: function() { keyRetrieval.failure(); },
-							dataType: 'json'
+						  	url: '/mata-cms/media/s3/set-random-file-name',
+						  	data: {name: filename},
+						  	success: function(data) {
+						  		var result = '" . $widget->s3Folder . "/' + data.key;
+						  		keyRetrieval.success(result); 
+						  	},
+						  	error: function() { keyRetrieval.failure(); },
+						  	dataType: 'json'
 						});
 
-return keyRetrieval;						
-}
-},
-multiple: " . ($widget->options['multiple'] ? 'true' : 'false') . ",
+						return keyRetrieval;						
+					}
+				},
+				multiple: " . ($widget->options['multiple'] ? 'true' : 'false') . ",
 			// Move to module settings
-validation: {
-	allowedExtensions: ['jpg', 'jpeg', 'gif', 'png', 'pdf', 'ico'],
-	sizeLimit: 2000000
-},
-signature: {
-	customHeaders: {'X-CSRF-Token':'" . \Yii::$app->request->getCsrfToken() . "'},
-	endpoint: '/mata-cms/media/s3/signature'
-},
-showMessage: function(message) {
-	if (message != 'No files to upload.') {
-		alert(message); 
-	} else {
-		if(uploadsPending == 0)
-			form.submit();
-	}
-},
-uploadSuccess: {
-	customHeaders: {'X-CSRF-Token':'" . \Yii::$app->request->getCsrfToken() . "'},
-	endpoint: '" . $widget->uploadSuccessEndpoint . "'
-},
-template: '$templateId',
-autoUpload: true,
-}).on('allComplete', function() {
+				validation: {
+					allowedExtensions: ['jpg', 'jpeg', 'gif', 'png', 'pdf', 'ico'],
+					sizeLimit: 2000000
+				},
+				signature: {
+					customHeaders: {'X-CSRF-Token':'" . \Yii::$app->request->getCsrfToken() . "'},
+					endpoint: '/mata-cms/media/s3/signature'
+				},
+				showMessage: function(message) {
+					if (message != 'No files to upload.') {
+						alert(message); 
+					} else {
+						if(uploadsPending == 0)
+							form.submit();
+					}
+				},
+				uploadSuccess: {
+					customHeaders: {'X-CSRF-Token':'" . \Yii::$app->request->getCsrfToken() . "'},
+					endpoint: '" . $widget->uploadSuccessEndpoint . "'
+				},
+				template: '$templateId',
+				autoUpload: true,
+			}).on('allComplete', function() {
 			// setTimeout(function() {
 			// 	if(uploadsPending == 0)
 			// 		form.submit(); 
 			// 	// form.submit();	
 			// }, 800)
 
-}).on('complete', function(a, id, name, uploadSuccessResponse, t, c) {
-	if (uploadSuccessResponse.Id == null) {
-		alert('Media Upload failed. Please get in touch with your support team.');
-	}
-	" . $widget->events['complete'] . "
-	var fileItem = $(this).fineUploader('getItemByFileId', id);
-	$(fileItem).find('.delete-file').on('click', function() {
-		$('li[qq-file-id=' + id + ']').remove();
-		$('input#' + inputFileId).val('');
-	});
+			}).on('complete', function(a, id, name, uploadSuccessResponse, t, c) {
+				if (uploadSuccessResponse.Id == null) {
+					alert('Media Upload failed. Please get in touch with your support team.');
+				}
+				" . $widget->events['complete'] . "
+				var fileItem = $(this).fineUploader('getItemByFileId', id);
+				$(fileItem).find('.delete-file').on('click', function() {
+					$('li[qq-file-id=' + id + ']').remove();
+					$('input#' + inputFileId).val('');
+				});
+
 }).on('progress', function(event, id, fileName, loaded, total) {
 
 	$('.qq-upload-spinner').css({
@@ -94,7 +95,9 @@ if($('.qq-upload-spinner')[0].style.width == '100%')
 }).on('submit', function() {
 	$('" . $widget->selector . " .current-media').remove();
 	$('" . $widget->selector . " .qq-upload-success').remove();
+
 });
+
 
 		// form.on('submit.manualUploader', function() {
 		// 	$('#" .  $widget->selector . " #current-media').remove();
