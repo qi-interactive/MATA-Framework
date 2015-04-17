@@ -77,6 +77,12 @@ class FineUploader extends InputWidget {
             $this->htmlOptions['id'] = $this->getId();
         }
 
+        if (!isset($this->options['id'])) {
+            $this->options['id'] = $this->getId();
+        } else {
+            $this->options['id'] = $this->options['id'];
+        }
+
         if(empty($this->uploadSuccessEndpoint))
             $this->uploadSuccessEndpoint = '/mata-cms/media/s3/upload-successful?documentId=' . urlencode($this->model->getDocumentId($this->attribute));
 
@@ -92,7 +98,7 @@ class FineUploader extends InputWidget {
      * @inheritdoc
      */
     public function run() {
-        $this->selector = '#' . $this->htmlOptions['id'];
+        $this->selector = '#' . $this->options['id'];
 
         $this->registerPlugin();
         $this->registerJS();

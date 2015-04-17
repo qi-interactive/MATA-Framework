@@ -22,8 +22,22 @@ use yii\web\View;
 				objectProperties: {
 					acl: 'public-read',
 					key: function(fileId) {
-						var filename = $('" . $widget->selector ." .fine-uploader').fineUploaderS3('getName', fileId);
-						return '" . $widget->s3Folder . "/' + filename;
+						var keyRetrieval = new qq.Promise(),
+						filename = $('" . $widget->selector ." .fine-uploader').fineUploaderS3('getName', fileId);
+
+						$.ajax({
+							type: 'POST',
+						  	url: '/mata-cms/media/s3/set-random-file-name',
+						  	data: {name: filename},
+						  	success: function(data) {
+						  		var result = '" . $widget->s3Folder . "/' + data.key;
+						  		keyRetrieval.success(result); 
+						  	},
+						  	error: function() { keyRetrieval.failure(); },
+						  	dataType: 'json'
+						});
+
+						return keyRetrieval;						
 					}
 				},
 				multiple: " . ($widget->options['multiple'] ? 'true' : 'false') . ",
