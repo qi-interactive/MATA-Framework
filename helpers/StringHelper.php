@@ -22,5 +22,16 @@ class StringHelper extends \yii\helpers\StringHelper {
 		echo $text;
 	}
 
+	public static function replaceTag($text, $from, $to) {
+		$text = preg_replace("~<(/)?$from>~", "<\\1$to>", $text);
+		echo $text;
+	}
+
+	public static function removeHtmlTags($string) {
+		$text = preg_replace('/(<\/[a-z]+>)/', '$1 ', $string);
+		$text = trim(preg_replace('/\s+/', ' ', strip_tags($string)));
+		return $text;
+	}
+
 
 }
