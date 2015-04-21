@@ -28,8 +28,8 @@ class StringHelper extends \yii\helpers\StringHelper {
 	}
 
 	public static function removeHtmlTags($string) {
-		$text = preg_replace('/(<\/[a-z]+>)/', '$1 ', $string);
-		$text = trim(preg_replace('/\s+/', ' ', strip_tags($string)));
+		$text = preg_replace('/(<\/[a-z0-9]+>)/', '$1 ', $string);
+		$text = trim(preg_replace('/\s+/', ' ', strip_tags($text)));
 		return $text;
 	}
 
