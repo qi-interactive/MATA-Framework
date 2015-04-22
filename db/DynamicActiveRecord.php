@@ -23,6 +23,11 @@ class DynamicActiveRecord extends \mata\db\ActiveRecord {
 		return self::$tableName;
 	}
 
+    public static function instantiate($row)
+    {
+        return new static(self::$tableName);
+    }
+
 	public static function setTableName($tableName)
 	{
 		self::$tableName = $tableName;
