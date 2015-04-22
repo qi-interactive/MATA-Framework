@@ -20,7 +20,7 @@ class ActiveRecord extends \yii\db\ActiveRecord {
 	     return parent::__get($name);
 	 }
 
-	 public function getDocumentId($attribute = null) {
+	 public function getDocumentId($attribute = null, $property = null) {
 
 	     $pk = $this->primaryKey;
 
@@ -29,6 +29,9 @@ class ActiveRecord extends \yii\db\ActiveRecord {
 
 	     if ($attribute != null)
 	         $pk .= "::" . $attribute;
+
+	     if ($property != null)
+	     	 $pk .= "::" . $property;
 
 	     return new DocumentId(sprintf("%s-%s", get_class($this), $pk));
 	 }
