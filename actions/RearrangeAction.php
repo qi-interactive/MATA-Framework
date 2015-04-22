@@ -4,6 +4,7 @@ namespace mata\actions;
 
 use Yii;
 use mata\base\ValidationException;
+use yii\web\NotFoundHttpException;
 
 class RearrangeAction extends \yii\base\Action {
 
@@ -32,6 +33,7 @@ class RearrangeAction extends \yii\base\Action {
 			foreach($pks as $index => $pk) {
 				$model = $this->model->findOne($pk);
 				$model->$orderColumnName = $index+1;
+
 				if(!$model->save())
 					throw new NotFoundHttpException($model->getTopError());
 			}
