@@ -5,6 +5,7 @@ namespace mata\db;
 use Yii;
 use yii\db\Schema;
 use yii\helpers\Inflector;
+use matacms\settings\models\Setting;
 
 class DynamicActiveRecord extends \mata\db\ActiveRecord {
 
@@ -47,6 +48,26 @@ class DynamicActiveRecord extends \mata\db\ActiveRecord {
         return $this->_attributes;
     }
 
+    public function getLabel()
+    {
+        $setting = Setting::findValue(self::tableName() . '::labelAttributes');
+        if(!empty($setting)) {
+            $attributes = explode(',', $setting);
+
+            $label = '';
+
+            foreach($attributes as $attribute) {
+                $attribute = trim($attribute);
+                if ($this->hasAttribute($attribute) && !empty($this->$attribute))
+                    $label .= $this->$attribute . ' ';
+            }
+
+            return $label;
+
+        }
+
+        return 'Undefined Label';
+    }
 
 	public function attributeLabels()
 	{

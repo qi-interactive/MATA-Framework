@@ -4,6 +4,7 @@ namespace mata\actions;
 
 use Yii;
 use mata\base\ValidationException;
+use yii\helpers\Json;
 
 class RearrangeAction extends \yii\base\Action {
 
@@ -35,7 +36,7 @@ class RearrangeAction extends \yii\base\Action {
 				if(!$model->save())
 					throw new NotFoundHttpException($model->getTopError());
 			}
-			echo "OK";
+			echo Json::encode(['Response' => 'OK']);
 		} catch (NotFoundHttpException $e) {
 			call_user_func_array($this->onValidationErrorHandler, [$this->model, $e]);
 			return;
