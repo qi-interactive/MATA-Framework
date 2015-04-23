@@ -35,7 +35,7 @@ class RearrangeAction extends \yii\base\Action {
 				$model = $this->model->findOne($pk);
 				$model->$orderColumnName = $index+1;
 
-				if(!$model->save())
+				if(!$model->save(false))
 					throw new NotFoundHttpException($model->getTopError());
 			}
 			echo Json::encode(['Response' => 'OK']);
