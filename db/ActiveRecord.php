@@ -3,8 +3,11 @@
 namespace mata\db;
 
 use mata\base\DocumentId;
+use ReflectionClass;
 
 class ActiveRecord extends \yii\db\ActiveRecord {
+
+	private $additionalProperties = [];
 
 	public function getTopError() {
 		if ($this->hasErrors()) {
@@ -13,28 +16,31 @@ class ActiveRecord extends \yii\db\ActiveRecord {
 		}
 	}
 
-	public function __get($name) {
-	     if ($name == "DocumentId")
-	         return new DocumentId($this->getAttribute("DocumentId"));
+	public function getDocumentId($attribute = null, $property = null) {
 
-	     return parent::__get($name);
-	 }
+	    $pk = $this->primaryKey;
 
-	 public function getDocumentId($attribute = null, $property = null) {
+	    if (is_array($pk))
+	        $pk = implode('-', $pk);            
 
-	     $pk = $this->primaryKey;
+	    if ($attribute != null)
+	        $pk .= "::" . $attribute;
 
-	     if (is_array($pk))
-	         $pk = implode('-', $pk);            
+	    if ($property != null)
+			$pk .= "::" . $property;
 
-	     if ($attribute != null)
-	         $pk .= "::" . $attribute;
+	    return new DocumentId(sprintf("%s-%s", get_class($this), $pk));
+	}
 
-	     if ($property != null)
-	     	 $pk .= "::" . $property;
+	public function addAdditionalAttribute($name)
+    {
+    	array_push($this->additionalProperties, $name);
+    }
 
-	     return new DocumentId(sprintf("%s-%s", get_class($this), $pk));
-	 }
+    public function attributes()
+    {
+        return array_merge($this->additionalProperties, array_keys(static::getTableSchema()->columns));
+    }
 
 
 }
