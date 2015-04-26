@@ -16,6 +16,13 @@ class ActiveRecord extends \yii\db\ActiveRecord {
 		}
 	}
 
+	public function __get($name) {
+	     if ($name == "DocumentId")
+	         return new DocumentId($this->getAttribute("DocumentId"));
+
+	     return parent::__get($name);
+	 }
+
 	public function getDocumentId($attribute = null, $property = null) {
 
 	    $pk = $this->primaryKey;
