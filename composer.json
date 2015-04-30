@@ -9,8 +9,7 @@
         "php": ">=5.4.0",
         "yiisoft/yii2": "*",
         "codeception/codeception": "*",
-        "kartik-v/yii2-sortable": "*",
-        "eonasdan/bootstrap-datetimepicker": "*"
+        "kartik-v/yii2-sortable": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
