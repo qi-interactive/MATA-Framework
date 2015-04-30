@@ -4,6 +4,7 @@ namespace mata\widgets\InfiniteScrollPager;
 
 use yii\helpers\Json;
 use yii\widgets\Pjax;
+use yii\helpers\Html;
 
 class InfiniteScrollPager extends \yii\widgets\LinkPager
 {
@@ -16,10 +17,8 @@ class InfiniteScrollPager extends \yii\widgets\LinkPager
         $this->options['class'] = 'pagination hidden';
     }
 
-    public function run()
-    {
+    public function run() {
 
-    
         $clientOptions = [
             'pjax' => [
                 'id' => $this->clientOptions['pjax']['id']
@@ -34,6 +33,13 @@ class InfiniteScrollPager extends \yii\widgets\LinkPager
         $view->registerJs("mata.infinitePager.init($clientOptions);");
 
         parent::run();        
+    }
+
+    protected function renderPageButtons() {
+        $retVal = parent::renderPageButtons();
+        $retVal .= Html::tag("div", "", ["class" => "loader"]);
+        return $retVal;
+        
     }
 
 
