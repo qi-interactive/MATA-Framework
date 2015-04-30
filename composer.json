@@ -10,7 +10,7 @@
         "yiisoft/yii2": "*",
         "codeception/codeception": "*",
         "kartik-v/yii2-sortable": "*",
-        "bower-asset/eonasdan-bootstrap-datetimepicker": "*"
+        "eonasdan/bootstrap-datetimepicker": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
@@ -18,11 +18,5 @@
     },
     "autoload": {
         "psr-4": { "mata\\": "" }
-    },
-    "extra": {
-        "asset-installer-paths": {
-            "npm-asset-library": "vendor/npm",
-            "bower-asset-library": "vendor/bower"
-        }
     }
 }
