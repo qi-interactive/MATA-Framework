@@ -18,7 +18,6 @@ mata.infinitePager.init = function(opts) {
 				getNextPage(opts);
 			}
     	}
-		
 	});
 
 	function getNextPage(opts) {
@@ -29,7 +28,6 @@ mata.infinitePager.init = function(opts) {
 		mata.infinitePager.isLoading = true;
 		$('#'+opts.listViewId).find(".loader").show();
 		$('#'+opts.pjax.id).one('pjax:end', function(e, contents, options) {
-			// $('body').height(mata.infinitePager.bodyHeight)
 
 			var newContent = $('#'+opts.listViewId).find("> div:not(.loader)")
 			var newContentHeight = $('#'+opts.listViewId).outerHeight(true);
@@ -39,9 +37,6 @@ mata.infinitePager.init = function(opts) {
 			$('#'+opts.listViewId).find(".loader").hide();
 			$('body').scrollTop(mata.infinitePager.bodyHeight);
 
-			// $('#'+opts.listViewId).height($('#'+opts.listViewId).height() + newContentHeight);
-
-			
 			mata.simpleTheme.onPjaxSuccess();
 
 			newContent.each(function(i, el) {
