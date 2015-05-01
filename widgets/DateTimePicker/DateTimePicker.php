@@ -36,11 +36,13 @@ class DateTimePicker extends InputWidget
 
     public function run()
     {
+        echo Html::beginTag('div', ['class' => 'datetimepicker-field-wrapper']);
         if ($this->hasModel()) {
             echo Html::activeTextInput($this->model, $this->attribute, $this->options);
         } else {
             echo Html::textInput($this->name, $this->value, $this->options);
         }
+        echo Html::endTag('div');
         $view = $this->getView();
         DateTimePickerAsset::register($view);
         $id = $this->options['id'];
