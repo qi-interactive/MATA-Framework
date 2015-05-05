@@ -78,8 +78,8 @@ use yii\web\View;
 				" . $widget->events['complete'] . "
 				var fileItem = $(this).fineUploader('getItemByFileId', id);
 				$(fileItem).find('.delete-file').on('click', function() {
-					$('li[qq-file-id=' + id + ']').remove();
-					$('input#' + inputFileId).val('');
+					$('" . $widget->selector . " li[qq-file-id=' + id + ']').remove();
+					return false;
 				});
 
 }).on('progress', function(event, id, fileName, loaded, total) {
@@ -95,16 +95,26 @@ if($('.qq-upload-spinner')[0].style.width == '100%')
 }).on('submit', function() {
 	$('" . $widget->selector . " .current-media').remove();
 	$('" . $widget->selector . " .qq-upload-success').remove();
-
 });
 
 
 		// form.on('submit.manualUploader', function() {
-		// 	$('#" .  $widget->selector . " #current-media').remove();
+		// 	$('" .  $widget->selector . " #current-media').remove();
 		// 	manualuploader.fineUploader('uploadStoredFiles');
 		// 	form.off('submit.manualUploader');
 		// 	return false;
 		// })
+
+	setTimeout(function() {
+		$('" .  $widget->selector . " .qq-upload-list').html($('" .  $widget->selector . " .current-media').html())
+		$('" .  $widget->selector . " .current-media').remove();
+
+		$('" .  $widget->selector . " .qq-upload-list a.delete-file').on('click', function() {
+			var id = $(this).parents('.qq-upload-success').attr('qq-file-id');
+			$('" . $widget->selector . " li[qq-file-id=' + id + ']').remove();
+			return false;
+		});
+	}, 300);
 });", View::POS_READY);
 
 ?>
@@ -114,14 +124,10 @@ if($('.qq-upload-spinner')[0].style.width == '100%')
 	====================================================================== -->
 	<?php
 	$mediaValue = '';
-	if ($mediaModel): ?>
-	<?php 
-	$mediaValue = $mediaModel->DocumentId;
-	echo Html::img($mediaModel->URI, array(
-		"style" => "width: 100px",
-		"class" => "current-media"
-		)); ?>
-	<?php endif; ?>
+	if ($mediaModel) {
+		$mediaValue = $mediaModel->DocumentId;
+	}
+	?>
 	<div class="fine-uploader"></div>
 
 </div>
@@ -130,52 +136,74 @@ if($('.qq-upload-spinner')[0].style.width == '100%')
 
 	<script type="text/template" id="<?= $templateId ?>">
 		<div class="qq-uploader-selector qq-uploader">
-
-
 			<div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
 				<span>DROP your file here to upload</span>
 			</div>
+			<span class="qq-drop-processing-selector qq-drop-processing">
+				<span>Processing dropped files...</span>
+				<span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+			</span>
+			<?php
+				if ($mediaModel):
+				?>
+				<div class="current-media">
+					<li class="qq-file-id-0 qq-upload-success" qq-file-id="0">
+					<div class="grid-item">
+						<figure class="effect-winston">
+							<div class="img-container">
+								<img class="qq-thumbnail-selector" qq-server-scale src="<?= $mediaModel->URI ?>">
+							</div>
+							<figcaption>
+								<p>
+									<a href="#" class="delete-file"><span></span></a>
+								</p>
+							</figcaption>           
+						</figure>
+					</div>
+					</li>
+				</div>
+				<?php
+				endif;
+				?>
+			<ul class="qq-upload-list-selector qq-upload-list">
+				<li>
+					<div class="qq-progress-bar-container-selector">
+						<div class="qq-progress-bar-selector qq-progress-bar"></div>
+					</div>
+					<span class="qq-upload-spinner-selector qq-upload-spinner"></span>
 
+					<div class="grid-item">
+						<figure class="effect-winston">
+							<div class="img-container">
+								<img class="qq-thumbnail-selector" qq-server-scale>
+							</div>
+							<figcaption>
+								<p>
+									<a href="#" class="delete-file"><span></span></a>
+								</p>
+							</figcaption>           
+						</figure>
+					</div>
+					<!--
+					<span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
+					<span class="qq-upload-file-selector qq-upload-file"></span>
+					<input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+					<span class="qq-upload-size-selector qq-upload-size"></span>
+					<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Cancel</a>
+					<a class="qq-upload-retry-selector qq-upload-retry" href="#">Retry</a>
+					<a class="qq-upload-delete-selector qq-upload-delete" href="#">Delete</a>
+					<span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+					-->
+				</li>
+			</ul>
 			<div class="qq-upload-button-selector qq-upload-button">
-				<div class="add-media-inner-wrapper"> <div class="hi-icon-effect-2">
-					<div class="hi-icon hi-icon-cog"></div>
-				</div> <span> CLICK or DRAG & DROP </br> to upload a file</span>
+				<div class="add-media-inner-wrapper">
+					<div class="hi-icon-effect-2">
+						<div class="hi-icon hi-icon-cog"></div>
+					</div>
+					<span> CLICK or DRAG & DROP </br> to upload a file</span>
+				</div>
 			</div>
+			<input type="hidden" name="Media[]" id="<?php echo \yii\helpers\Html::getInputId($widget->model, $widget->attribute) ?>" value="<?= $mediaValue ?>">
 		</div>
-
-		<span class="qq-drop-processing-selector qq-drop-processing">
-			<span>Processing dropped files...</span>
-			<span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
-		</span>
-		<ul class="qq-upload-list-selector qq-upload-list">
-			<li>
-				<div class="qq-progress-bar-container-selector">
-					<div class="qq-progress-bar-selector qq-progress-bar"></div>
-				</div>
-				<span class="qq-upload-spinner-selector qq-upload-spinner"></span>
-
-				<div class="grid-item">
-					<figure class="effect-winston"><div class="img-container">
-						<img class="qq-thumbnail-selector" qq-server-scale> </div>
-						<figcaption>
-							<p>
-								<a href="#" class="delete-file"><span></span></a>
-							</p>
-						</figcaption>           
-					</figure>
-				</div>
-				<!--
-				<span class="qq-edit-filename-icon-selector qq-edit-filename-icon"></span>
-				<span class="qq-upload-file-selector qq-upload-file"></span>
-				<input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
-				<span class="qq-upload-size-selector qq-upload-size"></span>
-				<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Cancel</a>
-				<a class="qq-upload-retry-selector qq-upload-retry" href="#">Retry</a>
-				<a class="qq-upload-delete-selector qq-upload-delete" href="#">Delete</a>
-				<span class="qq-upload-status-text-selector qq-upload-status-text"></span>
-			-->
-		</li>
-	</ul>
-	<input type="hidden" name="Media[]" id="<?php echo \yii\helpers\Html::getInputId($widget->model, $widget->attribute) ?>" value="<?= $mediaValue ?>">
-</div>
 </script>
