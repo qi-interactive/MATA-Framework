@@ -34,6 +34,7 @@ class RearrangeAction extends \yii\base\Action {
 			foreach($pks as $index => $pk) {
 				$model = $this->model->findOne($pk);
 				$model->$orderColumnName = $index+1;
+				$model->disableVersioning();
 
 				if(!$model->save(false))
 					throw new NotFoundHttpException($model->getTopError());
