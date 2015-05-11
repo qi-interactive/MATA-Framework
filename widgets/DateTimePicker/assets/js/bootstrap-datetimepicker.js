@@ -741,6 +741,8 @@
             },
 
             hide = function () {
+                // TO BE REMOVED
+                return false;
                 var transitioning = false;
                 if (!widget) {
                     return picker;
