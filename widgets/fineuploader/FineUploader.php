@@ -13,6 +13,7 @@ use yii\web\View;
 use mata\widgets\fineuploader\FineUploaderAsset;
 use mata\keyvalue\models\KeyValue;
 use mata\media\models\Media;
+use mata\helpers\StringHelper;
 
 class FineUploader extends InputWidget {
 
@@ -103,9 +104,19 @@ class FineUploader extends InputWidget {
         $this->registerPlugin();
         $this->registerJS();
 
+        $mediaModel = Media::find()->forItem($this->model, $this->attribute)->one();
+
+        if(!empty($_POST['Media'])) {
+            foreach($_POST['Media'] as $media) {
+                if(StringHelper::endsWith($media, '::' . $this->attribute)) {
+                    $mediaModel = Media::find()->where(['DocumentId' => $media])->one();
+                }
+            }
+        }        
+
         echo $this->render($this->view, [
             "widget" => $this,
-            "mediaModel" => Media::find()->forItem($this->model, $this->attribute)->one()
+            "mediaModel" => $mediaModel
             ]);
     }
 
