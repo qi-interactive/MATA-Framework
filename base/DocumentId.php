@@ -1,4 +1,10 @@
 <?php
+ 
+/**
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
+ */
 
 namespace mata\base;
 
@@ -57,6 +63,7 @@ class DocumentId {
 		return $namespaceWithClass::findOne($components[2]);
 
 	}
+
 	/**
 	 * Returns: 
 	 * [0] while string
@@ -99,5 +106,4 @@ class DocumentId {
 	public function __toString() {
 		return $this->id ?: "";
 	}
-
 }

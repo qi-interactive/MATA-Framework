@@ -1,8 +1,15 @@
-<?php 
+<?php
+ 
+/**
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
+ */
 
 namespace mata\log;
 
 use yii\log\Logger;
+
 /**
  *  Add the ability to remove file/line number from the logs: 
  * 
@@ -36,5 +43,3 @@ class FileTarget extends \yii\log\FileTarget {
 		. (empty($traces) ? '' : "\n    " . implode("\n    ", $traces));
 	}
 }
-
-?>

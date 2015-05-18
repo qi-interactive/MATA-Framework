@@ -1,8 +1,9 @@
 <?php
+ 
 /**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
  */
 
 namespace mata\db;
@@ -49,8 +50,6 @@ use yii\di\Instance;
  * $posts = $provider->getModels();
  * ~~~
  *
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @since 2.0
  */
 class DynamicActiveDataProvider extends \yii\data\BaseDataProvider
 {
@@ -76,6 +75,7 @@ class DynamicActiveDataProvider extends \yii\data\BaseDataProvider
      * @see getKeys()
      */
     public $key;
+
     /**
      * @var Connection|array|string the DB connection object or the application component ID of the DB connection.
      * If not set, the default DB connection will be used.
@@ -94,9 +94,6 @@ class DynamicActiveDataProvider extends \yii\data\BaseDataProvider
         parent::init();
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function prepareModels()
     {
         if (!$this->query instanceof QueryInterface) {
@@ -114,9 +111,6 @@ class DynamicActiveDataProvider extends \yii\data\BaseDataProvider
         return $query->all($this->db);
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function prepareKeys($models)
     {
         $keys = [];
@@ -155,9 +149,6 @@ class DynamicActiveDataProvider extends \yii\data\BaseDataProvider
         }
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function prepareTotalCount()
     {
         if (!$this->query instanceof QueryInterface) {
@@ -166,59 +157,4 @@ class DynamicActiveDataProvider extends \yii\data\BaseDataProvider
         $query = clone $this->query;
         return (int) $query->limit(-1)->offset(-1)->orderBy([])->count('*', $this->db);
     }
-
-    /**
-     * @return Sort|boolean the sorting object. If this is false, it means the sorting is disabled.
-     */
-    
-    // public function getSort()
-    // {
-    //     if ($this->_sort === null) {
-    //         $this->setSort([]);
-    //     }
-
-    //     return $this->_sort;
-    // }
-
-    // /**
-    //  * @inheritdoc
-    //  */
-    // public function setSort($value)
-    // {
-    //     $this->setSortInternal($value);
-    //     if (($sort = $this->getSort()) !== false && $this->query instanceof ActiveQueryInterface) {
-    //         /* @var $model Model */
-    //         $model = new $this->query->modelClass;
-    //         if (empty($sort->attributes)) {
-    //             foreach ($model->attributes() as $attribute) {
-    //                 $sort->attributes[$attribute] = [
-    //                     'asc' => [$attribute => SORT_ASC],
-    //                     'desc' => [$attribute => SORT_DESC],
-    //                     'label' => $model->getAttributeLabel($attribute),
-    //                 ];
-    //             }
-    //         } else {
-    //             foreach($sort->attributes as $attribute => $config) {
-    //                 if (!isset($config['label'])) {
-    //                     $sort->attributes[$attribute]['label'] = $model->getAttributeLabel($attribute);
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-    // protected function setSortInternal($value)
-    // {
-    //     if (is_array($value)) {
-    //         $config = ['class' => Sort::className()];
-    //         if ($this->id !== null) {
-    //             $config['sortParam'] = $this->id . '-sort';
-    //         }
-    //         $this->_sort = Yii::createObject(array_merge($config, $value));
-    //     } elseif ($value instanceof Sort || $value === false) {
-    //         $this->_sort = $value;
-    //     } else {
-    //         throw new InvalidParamException('Only Sort instance, configuration array or false is allowed.');
-    //     }
-    // }
 }

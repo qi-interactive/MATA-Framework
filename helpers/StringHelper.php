@@ -1,4 +1,10 @@
 <?php
+ 
+/**
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
+ */
 
 namespace mata\helpers;
 
@@ -32,6 +38,4 @@ class StringHelper extends \yii\helpers\StringHelper {
 		$text = trim(preg_replace('/\s+/', ' ', strip_tags($text)));
 		return $text;
 	}
-
-
 }

@@ -1,4 +1,10 @@
 <?php
+ 
+/**
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
+ */
 
 namespace mata\widgets\DateTimePicker;
 
@@ -17,10 +23,12 @@ class DateTimePicker extends InputWidget
      * @var array the HTML attributes for the input tag.
      */
     public $options = [];
+
     /**
      * @var array options for datetimepicker
      */
     public $clientOptions = [];
+
     /**
      * @var array events for datetimepicker
      */
@@ -48,9 +56,6 @@ class DateTimePicker extends InputWidget
         $id = $this->options['id'];
         $options = empty($this->clientOptions) ? '' : Json::encode($this->clientOptions);
         $js = "jQuery('#$id').datetimepicker($options)";
-        // foreach ($this->clientEvents as $event => $handler) {
-        //     $js .= ".on('$event', $handler)";
-        // }
         $view->registerJs($js . ';');
     }
 }

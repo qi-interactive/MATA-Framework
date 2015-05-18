@@ -1,4 +1,10 @@
 <?php
+ 
+/**
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
+ */
 
 namespace mata\behaviors;
 
@@ -33,5 +39,4 @@ class IncrementalBehavior extends \yii\base\Behavior {
 		$this->owner->$incrementField = $lastIncrement != null ? 
 			$lastIncrement + $this->incrementBy : $this->initialIncrement;
 	}
-
 }

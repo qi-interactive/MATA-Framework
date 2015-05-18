@@ -1,8 +1,9 @@
 <?php
+ 
 /**
- * @author: Harry Tang (giaduy@gmail.com)
- * @link: http://www.greyneuron.com
- * @copyright: Grey Neuron
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
  */
 
 namespace mata\widgets\fineuploader;
@@ -95,9 +96,6 @@ class FineUploader extends InputWidget {
         $this->s3Folder = KeyValue::findValue(self::S3_REDACTOR_FOLDER);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function run() {
         $this->selector = '#' . $this->options['id'];
 
