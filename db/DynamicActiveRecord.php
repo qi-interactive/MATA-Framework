@@ -1,66 +1,105 @@
-<?php 
+<?php
+ 
+/**
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
+ */
 
 namespace mata\db;
 
 use Yii;
 use yii\db\Schema;
 use yii\helpers\Inflector;
+use matacms\settings\models\Setting;
 
 class DynamicActiveRecord extends \mata\db\ActiveRecord {
 
-	protected static $tableName;
-	private $_rules;
-	private $_attributeLabels;
+    protected static $tableName;
+    private $_rules;
+    private $_attributeLabels;
+    private $_attributes;
 
-	public function __construct($tableName)
-	{
-		self::$tableName = $tableName;
-		$this->setupModel($tableName);
-	}
+    public function __construct($tableName)
+    {
+        self::$tableName = $tableName;
+        $this->setupModel($tableName);
+    }
 
-	public static function tableName() {
-		return self::$tableName;
-	}
+    public static function tableName() {
+        return self::$tableName;
+    }
 
-	public static function setTableName($tableName)
-	{
-		self::$tableName = $tableName;
-	}
+    public static function instantiate($row)
+    {
+        return new static(self::$tableName);
+    }
 
-	protected static function getDbConnection() {
+    public static function setTableName($tableName)
+    {
+        self::$tableName = $tableName;
+    }
+
+    protected static function getDbConnection() {
         return Yii::$app->getDb();
     }
 
-	public function rules()
-	{
-		return $this->_rules;
-	}
+    public function rules()
+    {
+        return $this->_rules;
+    }
 
+    public function attributes()
+    {
+        return $this->_attributes;
+    }
 
-	public function attributeLabels()
-	{
-		return $this->_attributeLabels;
-	}
+    public function getLabel()
+    {
+        $setting = Setting::findValue(self::tableName() . '::labelAttributes');
+        if(!empty($setting)) {
+            $attributes = explode(',', $setting);
 
-	private function setupModel($tableName) {
-		$tableSchema = self::getDbConnection()->getTableSchema($tableName);
-		if(!empty($tableSchema->columns)) {
-			$fields = [];
-			foreach ($tableSchema->columns as $column) {
-				// if($column->name == 'Id')
-				// 	continue;
-				$fields[] = $column->name;
-			}
+            $label = '';
 
-			// Prepare rules
-			$this->_rules = self::generateRulesFromTableSchema($tableSchema);
+            foreach($attributes as $attribute) {
+                $attribute = trim($attribute);
+                if ($this->hasAttribute($attribute) && !empty($this->$attribute))
+                    $label .= $this->$attribute . ' ';
+            }
 
-			// Prepare attributeLabels
-			$this->_attributeLabels = self::generateLabelsFromTableSchema($tableSchema);
-		}
-	}
+            return $label;
 
-	/**
+        }
+
+        return 'Undefined Label';
+    }
+
+    public function attributeLabels()
+    {
+        return $this->_attributeLabels;
+    }
+
+    private function setupModel($tableName) {
+        $tableSchema = self::getDbConnection()->getTableSchema($tableName);
+        if(!empty($tableSchema->columns)) {
+            $fields = [];
+            foreach ($tableSchema->columns as $column) {
+                // if($column->name == 'Id')
+                //  continue;
+                $fields[] = $column->name;
+            }           
+
+            $this->_attributes = $fields;
+            // Prepare rules
+            $this->_rules = self::generateRulesFromTableSchema($tableSchema);
+
+            // Prepare attributeLabels
+            $this->_attributeLabels = self::generateLabelsFromTableSchema($tableSchema);
+        }
+    }
+
+    /**
      * Generates validation rules for the specified table.
      * @param \yii\db\TableSchema $table the table schema
      * @return array the generated validation rules
@@ -74,7 +113,7 @@ class DynamicActiveRecord extends \mata\db\ActiveRecord {
             if ($column->autoIncrement) {
                 continue;
             }
-            if (!$column->allowNull && $column->defaultValue !== null) {
+            if (!$column->allowNull) {
                 $types['required'][] = $column->name;
             }
             switch ($column->type) {
@@ -105,10 +144,10 @@ class DynamicActiveRecord extends \mata\db\ActiveRecord {
                         $types['string'][] = $column->name;
                     }
                     if (stripos($column->name, 'email') !== false) {
-			            $types['email'][] = $column->name;
-			        } elseif (stripos($column->name, 'url') !== false) {
-			            $types['url'][] = $column->name;
-			        }
+                        $types['email'][] = $column->name;
+                    } elseif (stripos($column->name, 'url') !== false) {
+                        $types['url'][] = $column->name;
+                    }
             }
         }
         // $rules = [];
@@ -125,13 +164,13 @@ class DynamicActiveRecord extends \mata\db\ActiveRecord {
             $uniqueIndexes = $db->getSchema()->findUniqueIndexes($tableSchema);
             foreach ($uniqueIndexes as $uniqueColumns) {
                 // Avoid validating auto incremental columns
-                if (!$this->isColumnAutoIncremental($tableSchema, $uniqueColumns)) {
+                if (!self::isColumnAutoIncremental($tableSchema, $uniqueColumns)) {
                     $attributesCount = count($uniqueColumns);
 
                     if ($attributesCount == 1) {
                         $rules[] = [$uniqueColumns[0], 'unique'];
                     } elseif ($attributesCount > 1) {
-                        $labels = array_intersect_key($this->generateLabels($tableSchema), array_flip($uniqueColumns));
+                        $labels = array_intersect_key(self::generateLabels($tableSchema), array_flip($uniqueColumns));
                         $lastLabel = array_pop($labels);
                         $columnsList = implode("', '", $uniqueColumns);
                         $rules[] = [$columnsList, 'unique', ['targetAttribute' => [$columnsList], 'message' => 'The combination of " . implode(', ', $labels) . " and " . $lastLabel . " has already been taken.']];
@@ -165,6 +204,17 @@ class DynamicActiveRecord extends \mata\db\ActiveRecord {
         }
 
         return $labels;
+    }
+
+    protected static function isColumnAutoIncremental($table, $columns)
+    {
+        foreach ($columns as $column) {
+            if (isset($table->columns[$column]) && $table->columns[$column]->autoIncrement) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

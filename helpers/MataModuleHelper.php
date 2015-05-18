@@ -1,4 +1,10 @@
 <?php
+ 
+/**
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
+ */
 
 namespace mata\helpers;
 
@@ -13,15 +19,18 @@ class MataModuleHelper {
 	public static function getModuleByClass($class) {
 		$modules = \Yii::$app->getModules();
 
-		foreach ($modules as $module) {
+		foreach ($modules as $id => $module) {
 
 			if (is_array($module))
-				$module = new $module["class"](null); // module not initialized
+				$module = new $module["class"]($id); // module not initialized
 
-			if (get_class($module) == $class)
-				return $module;
+			if (is_string($module))
+				$module = new $module($id); // module not initialized
+
+				if (get_class($module) == $class)
+					return $module;
+			}
 		}
-	}
 
 	public static function getModuleNamespaceByDir($dir) {
 		$moduleFile = ComposerHelper::getLibraryNamespaceByDir($dir);

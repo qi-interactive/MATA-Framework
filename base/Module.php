@@ -1,4 +1,10 @@
-<?php 
+<?php
+ 
+/**
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
+ */
 
 namespace mata\base;
 use yii\base\Module as BaseModule;
@@ -10,6 +16,8 @@ abstract class Module extends BaseModule {
 	public abstract function getNavigation();
 	
 	public $mataConfig = [];
+
+	public $canShowInNavigation = true;
 
 	const CONFIG_FILE_NAME = "module-config.json";
 	const DEFAULT_ASSET_BUNDLE = "ModuleAsset";
@@ -28,8 +36,18 @@ abstract class Module extends BaseModule {
 		return $this->mataConfig->version;
 	}
 
+	private function getDefaultConfig() {
+		return [
+			'class' => get_class($this)
+		];
+	}
+
+	public function getConfig() {
+		return $this->getDefaultConfig();
+	}
+
 	public function canShowInNavigation() {
-		return true;
+		return $this->canShowInNavigation;
 	}
 
 	public function getName() {
@@ -53,16 +71,7 @@ abstract class Module extends BaseModule {
 		
 		$namespace = str_replace("Module", "", $classInfo->name);
 
-
-		// $libraryDir = ComposerHelper::getLibraryDirByNamespace($namespace);
-
 		$libraryDir = str_replace("Module.php", "", $classInfo->getFileName());
-
-// $libraryDir = ComposerHelper::getLibraryDirByNamespace($namespace);
-
-		// if ($libraryDir == null)
-		// 	throw new InvalidConfigException(sprintf("Could not find library directory for namespace %s", $namespace));
-
 		$configFile = $libraryDir . DIRECTORY_SEPARATOR . self::CONFIG_FILE_NAME;
 
 		if (file_exists($configFile) == false)

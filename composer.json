@@ -8,11 +8,8 @@
 	"require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "*",
-        "codeception/codeception": "*"
-    },
-    "require-dev": {
-        "yiisoft/yii2-codeception": "*",
-        "yiisoft/yii2-faker": "*"
+        "kartik-v/yii2-sortable": "*",
+        "bower-asset/moment": "2.*"
     },
     "autoload": {
         "psr-4": { "mata\\": "" }
