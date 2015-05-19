@@ -79,6 +79,7 @@ use yii\web\View;
 				var fileItem = $(this).fineUploader('getItemByFileId', id);
 				$(fileItem).find('.delete-file').on('click', function() {
 					$('" . $widget->selector . " li[qq-file-id=' + id + ']').remove();
+					$('" . $widget->selector . "').find('input#" . \yii\helpers\Html::getInputId($widget->model, $widget->attribute) . "').val('').trigger('mediaChanged');
 					return false;
 				});
 
@@ -112,6 +113,7 @@ if($('.qq-upload-spinner')[0].style.width == '100%')
 		$('" .  $widget->selector . " .qq-upload-list a.delete-file').on('click', function() {
 			var id = $(this).parents('.qq-upload-success').attr('qq-file-id');
 			$('" . $widget->selector . " li[qq-file-id=' + id + ']').remove();
+			$('" . $widget->selector . "').find('input#" . \yii\helpers\Html::getInputId($widget->model, $widget->attribute) . "').val('').trigger('mediaChanged');
 			return false;
 		});
 	}, 300);
