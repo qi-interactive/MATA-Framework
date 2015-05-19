@@ -22,7 +22,7 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
-## 1.0.1-alpha, May 18, 2015
+## 1.0.1-alpha, May 19, 2015
 
 - Added JS trigger for 'mediaChanged' event for FineUploader after file delete.
 
