@@ -1,8 +1,9 @@
 <?php
+ 
 /**
- * @author: Harry Tang (giaduy@gmail.com)
- * @link: http://www.greyneuron.com
- * @copyright: Grey Neuron
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
  */
 
 namespace mata\widgets\fineuploader;
@@ -13,6 +14,7 @@ use yii\web\View;
 use mata\widgets\fineuploader\FineUploaderAsset;
 use mata\keyvalue\models\KeyValue;
 use mata\media\models\Media;
+use mata\helpers\StringHelper;
 
 class FineUploader extends InputWidget {
 
@@ -94,18 +96,25 @@ class FineUploader extends InputWidget {
         $this->s3Folder = KeyValue::findValue(self::S3_REDACTOR_FOLDER);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function run() {
         $this->selector = '#' . $this->options['id'];
 
         $this->registerPlugin();
         $this->registerJS();
 
+        $mediaModel = Media::find()->forItem($this->model, $this->attribute)->one();
+
+        if(!empty($_POST['Media'])) {
+            foreach($_POST['Media'] as $media) {
+                if(StringHelper::endsWith($media, '::' . $this->attribute)) {
+                    $mediaModel = Media::find()->where(['DocumentId' => $media])->one();
+                }
+            }
+        }        
+
         echo $this->render($this->view, [
             "widget" => $this,
-            "mediaModel" => Media::find()->forItem($this->model, $this->attribute)->one()
+            "mediaModel" => $mediaModel
             ]);
     }
 

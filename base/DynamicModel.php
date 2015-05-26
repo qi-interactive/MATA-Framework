@@ -1,8 +1,9 @@
 <?php
+ 
 /**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
  */
 
 namespace mata\base;
@@ -24,9 +25,7 @@ class DynamicModel extends \yii\base\DynamicModel {
     {
         $this->attributeLabels[$attribute] = $label;
     }
-    /**
-     * @inheritdoc
-     */
+
     public function getAttributeLabels()
     {
         return $this->attributeLabels;
@@ -77,6 +76,4 @@ class DynamicModel extends \yii\base\DynamicModel {
             throw new InvalidConfigException("The table does not exist: " . $this->getTableName());
         }
     }
-
-
 }

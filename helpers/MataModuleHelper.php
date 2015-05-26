@@ -1,4 +1,10 @@
 <?php
+ 
+/**
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
+ */
 
 namespace mata\helpers;
 
@@ -26,27 +32,27 @@ class MataModuleHelper {
 			}
 		}
 
-		public static function getModuleNamespaceByDir($dir) {
-			$moduleFile = ComposerHelper::getLibraryNamespaceByDir($dir);
+	public static function getModuleNamespaceByDir($dir) {
+		$moduleFile = ComposerHelper::getLibraryNamespaceByDir($dir);
 
-			if ($moduleFile == null) {
+		if ($moduleFile == null) {
 
-				$dir =  $dir . DIRECTORY_SEPARATOR . "Module.php";
-				$modules = \Yii::$app->getModules();
+			$dir =  $dir . DIRECTORY_SEPARATOR . "Module.php";
+			$modules = \Yii::$app->getModules();
 
-				foreach ($modules as $module) {
+			foreach ($modules as $module) {
 
-					if (is_array($module))
-						$module = self::getModuleByClass($module["class"]);
+				if (is_array($module))
+					$module = self::getModuleByClass($module["class"]);
 
-					$reflector = new \ReflectionClass($module);
+				$reflector = new \ReflectionClass($module);
 
-					if ($reflector->getFileName() == $dir) {
-						return $reflector->getNamespaceName() . "\\";
-					}
+				if ($reflector->getFileName() == $dir) {
+					return $reflector->getNamespaceName() . "\\";
 				}
-			}	
+			}
+		}	
 
-			return $moduleFile;	
-		}
+		return $moduleFile;	
 	}
+}

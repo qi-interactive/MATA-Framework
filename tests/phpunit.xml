@@ -1,7 +1,0 @@
-<phpunit>
- <filter>
-    <whitelist addUncoveredFilesFromWhitelist="true">
-      <directory suffix=".php">unit</directory>
-    </whitelist>
-  </filter>
-</phpunit>

@@ -1,8 +1,9 @@
 <?php
+ 
 /**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
  */
 
 namespace mata\behaviors;
@@ -44,11 +45,6 @@ use yii\db\BaseActiveRecord;
  *     ];
  * }
  * ```
- *
- * @author Luciano Baraglia <luciano.baraglia@gmail.com>
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @author Alexander Kochetov <creocoder@gmail.com>
- * @since 2.0
  */
 class BlameableBehavior extends \yii\behaviors\AttributeBehavior
 {
@@ -57,11 +53,13 @@ class BlameableBehavior extends \yii\behaviors\AttributeBehavior
      * Set this property to false if you do not want to record the creator ID.
      */
     public $createdByAttribute = 'created_by';
+   
     /**
      * @var string the attribute that will receive current user ID value
      * Set this property to false if you do not want to record the updater ID.
      */
     public $updatedByAttribute = 'updated_by';
+    
     /**
      * @var callable the value that will be assigned to the attributes. This should be a valid
      * PHP callable whose return value will be assigned to the current attribute(s).
@@ -77,10 +75,6 @@ class BlameableBehavior extends \yii\behaviors\AttributeBehavior
      */
     public $value;
 
-
-    /**
-     * @inheritdoc
-     */
     public function init()
     {
         parent::init();

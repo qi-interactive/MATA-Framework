@@ -1,4 +1,10 @@
-<?php 
+<?php
+ 
+/**
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
+ */
 
 namespace mata\base;
 use yii\base\Module as BaseModule;
@@ -65,16 +71,7 @@ abstract class Module extends BaseModule {
 		
 		$namespace = str_replace("Module", "", $classInfo->name);
 
-
-		// $libraryDir = ComposerHelper::getLibraryDirByNamespace($namespace);
-
 		$libraryDir = str_replace("Module.php", "", $classInfo->getFileName());
-
-// $libraryDir = ComposerHelper::getLibraryDirByNamespace($namespace);
-
-		// if ($libraryDir == null)
-		// 	throw new InvalidConfigException(sprintf("Could not find library directory for namespace %s", $namespace));
-
 		$configFile = $libraryDir . DIRECTORY_SEPARATOR . self::CONFIG_FILE_NAME;
 
 		if (file_exists($configFile) == false)
