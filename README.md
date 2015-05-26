@@ -22,6 +22,10 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
+## 1.0.6-alpha, May 26, 2015
+
+- Modified error message markups and added strong tags
+
 ## 1.0.5-alpha, May 26, 2015
 
 - Added [[StrongLinkBehavior]]
