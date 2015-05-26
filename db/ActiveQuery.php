@@ -8,6 +8,8 @@
 
 namespace mata\db;
 
+use Yii;
+
 class ActiveQuery extends \yii\db\ActiveQuery {
 
 	/**
