@@ -22,6 +22,15 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
+## 1.0.3.1-alpha, May 25, 2015
+
+- Fixing bugs introduced in 1.0.3-alpha
+
+## 1.0.3-alpha, May 25, 2015
+
+- Added [[ActiveQuery]] with [[cachedOne]] method
+- Removed unused files
+
 ## 1.0.2-alpha, May 22, 2015
 
 - FineUploader view updated.
