@@ -24,7 +24,8 @@ Changelog
 
 ## 1.0.4-alpha, May 26, 2015
 
-- ItemOrderBehavior added
+- Added [[StrongLinkBehavior]]
+- Added [[ItemOrderBehavior]]
 
 ## 1.0.3.1-alpha, May 25, 2015
 
