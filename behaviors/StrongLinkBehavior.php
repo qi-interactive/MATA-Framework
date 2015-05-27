@@ -38,7 +38,7 @@ class StrongLinkBehavior extends \yii\base\Behavior {
 
 	public function events() {
 		return [
-			BaseActiveRecord::EVENT_BEFORE_DELETE => "onBeforeDelete"
+		BaseActiveRecord::EVENT_BEFORE_DELETE => "onBeforeDelete"
 		];
 	}
 
@@ -48,20 +48,20 @@ class StrongLinkBehavior extends \yii\base\Behavior {
 
 		foreach ($this->links as $link) {
 
-			if (!empty($model->$link)) {
+			$linkedModels = is_callable($link) ? $link($model) : $model->$link;
 
-				$linkedList = $model->$link;
+			if (!empty($linkedModels)) {
+
 				$linkedLabels = [];
 
-				$linkedCount = count($linkedList);
+				$linkedCount = count($linkedModels);
 
-				foreach ($linkedList as $linkedObj)
+				foreach ($linkedModels as $linkedObj)
 					$linkedLabels[] = $linkedObj->getLabel();
 
-				$link = $model->$link;
-				$firstLink = $link[0];
+				$firstLink = $linkedModels[0];
 
-				$model->addError("Name", sprintf("Cannot delete %s as it has a %d linked %s: %s", $model->getLabel(), $linkedCount, $firstLink->getModelLabel(), implode($linkedLabels, ", ")));
+				$model->addError("Name", sprintf("Cannot delete <strong>%s</strong> as it has a %d linked %s:<strong> %s </strong>", $model->getLabel(), $linkedCount, $firstLink->getModelLabel(), implode($linkedLabels, ", ")));
 
 				$event->isValid = false;
 

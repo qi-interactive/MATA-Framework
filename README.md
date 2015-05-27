@@ -22,9 +22,20 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
-## 1.0.4-alpha, May 26, 2015
+## TBD
+
+- Updated [[StrongLinkBehavior]] to accept closures in [[StrongLinkBehavior::links]]
+
+## 1.0.6-alpha, May 26, 2015
+
+- Modified error message markups and added strong tags
+
+## 1.0.5-alpha, May 26, 2015
 
 - Added [[StrongLinkBehavior]]
+
+## 1.0.4-alpha, May 26, 2015
+
 - Added [[ItemOrderBehavior]]
 
 ## 1.0.3.1-alpha, May 25, 2015
