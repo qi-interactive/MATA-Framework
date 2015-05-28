@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+# MATA-Framework
+ 
+=======
 MATA Framework
 ==========================================
 
@@ -23,8 +27,11 @@ Changelog
 ---------
 
 ## TBD
-
+- Added [[forceIncrement]] to [[IncrementalBehavior]]
+- Ensured [[EVENT_BEFORE_PREPARE_STATEMENT]] fires only once per model
+- New way of handling Media, allowing versioning and deletions
 - Updated [[StrongLinkBehavior]] to accept closures in [[StrongLinkBehavior::links]]
+
 
 ## 1.0.6-alpha, May 26, 2015
 
@@ -58,3 +65,4 @@ Changelog
 ## 1.0.0-alpha, May 18, 2015
 
 - Initial release.
+>>>>>>> Stashed changes
