@@ -101,15 +101,16 @@ class FineUploader extends InputWidget {
 
         $this->registerPlugin();
         $this->registerJS();
-  $mediaModel = Media::find()->forItem($this->model, $this->attribute)->one();
+        $mediaModel = Media::find()->forItem($this->model, $this->attribute)->one();
 
         /**
          * In case of validation errors, the same form should be returned
          */
         if(!empty($_POST['Media'])) {
             foreach($_POST['Media'] as $key => $media) {
-                $documentId = $media["DocumentId"];
-                if(StringHelper::endsWith($documentId, '::' . $this->attribute)) {
+                $documentId = isset($media["DocumentId"]) ? $media["DocumentId"] : null;
+
+                if ($documentId && StringHelper::endsWith($documentId, '::' . $this->attribute)) {
                     $mediaModel = Media::find()->where(['For' => $media])->one();
                 }
             }
