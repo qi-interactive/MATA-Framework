@@ -12,8 +12,6 @@ use Yii;
 
 class ActiveQuery extends \yii\db\ActiveQuery {
 
-<<<<<<< HEAD
-=======
 	public $handled = false;
 
 	/**
@@ -33,7 +31,6 @@ class ActiveQuery extends \yii\db\ActiveQuery {
 	    return parent::prepare($builder);
 	}
 
->>>>>>> Multiple updates
 	/**
 	 * This function should be used for models that cannot be updated, such as Media.
 	 * Fetching such records will use cache, if available, which does not expire
@@ -55,8 +52,6 @@ class ActiveQuery extends \yii\db\ActiveQuery {
 
 	    return $data;
 	}
-<<<<<<< HEAD
-=======
 	
 	/**
 	 * Changed visibility to public 
@@ -87,5 +82,4 @@ class ActiveQuery extends \yii\db\ActiveQuery {
 
 	    return [$tableName, $alias];
 	}
->>>>>>> Multiple updates
 }
