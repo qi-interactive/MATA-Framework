@@ -148,7 +148,7 @@ class ItemOrderableBehavior extends \yii\base\Behavior implements ItemOrderableI
     $currentItemOrder = $itemOrder->find()->where(['DocumentId' => $this->owner->getDocumentId()->getId(), 'Grouping' => $class])->one();
 
     if(!empty($currentItemOrder)) {
-      $candidate = $this->prepareQuery($class, 'mata_itemorder.Order < :currentOrder', [':currentOrder' => $currentItemOrder->Order])->one();
+      $candidate = $this->prepareQuery($class, 'mata_itemorder.Order < :currentOrder', [':currentOrder' => $currentItemOrder->Order], 'DESC')->one();
       if(!empty($candidate))
         return $candidate;
 
