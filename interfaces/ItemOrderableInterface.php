@@ -15,9 +15,9 @@ interface ItemOrderableInterface
 
     public function ordered();
 
-    public function next();
+    public function next($looped);
 
-    public function previous();
+    public function previous($looped);
     
     public function first();
 
