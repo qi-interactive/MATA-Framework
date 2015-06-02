@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 # MATA-Framework
  
 =======
@@ -26,7 +25,12 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
+## 1.0.8-alpha, June 2, 2015
+
+- ItemOrderBehavior updated next() and previous() methods
+
 ## 1.0.7-alpha, May 28, 2015
+
 - Added [[forceIncrement]] to [[IncrementalBehavior]]
 - Ensured [[EVENT_BEFORE_PREPARE_STATEMENT]] fires only once per model
 - New way of handling Media, allowing versioning and deletions
@@ -65,4 +69,3 @@ Changelog
 ## 1.0.0-alpha, May 18, 2015
 
 - Initial release.
->>>>>>> Stashed changes
