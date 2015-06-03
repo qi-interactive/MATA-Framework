@@ -23,6 +23,7 @@ class ActiveQuery extends \yii\db\ActiveQuery {
 	const EVENT_BEFORE_PREPARE_STATEMENT = "EVENT_BEFORE_PREPARE_STATEMENT";
 
 	public function prepare($builder) {
+
 		if(!$this->handled) {
 			$this->trigger(self::EVENT_BEFORE_PREPARE_STATEMENT);
 			$this->handled = true;
