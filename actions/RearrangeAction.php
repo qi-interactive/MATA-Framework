@@ -28,7 +28,6 @@ class RearrangeAction extends \yii\base\Action {
 				throw $exception;
 			};
 		}
-		
 	}
 
 	public function run() {
@@ -44,11 +43,10 @@ class RearrangeAction extends \yii\base\Action {
 			foreach($pks as $index => $pk) {
 				$model = $this->model->findOne($pk);
 				$model->setOrder($index+1);
-
-				if(!$model->save(false))
-					throw new NotFoundHttpException($model->getTopError());
 			}
+
 			echo Json::encode(['Response' => 'OK']);
+			
 		} catch (NotFoundHttpException $e) {
 			call_user_func_array($this->onValidationErrorHandler, [$this->model, $e]);
 			return;

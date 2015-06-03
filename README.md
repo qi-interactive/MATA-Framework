@@ -25,6 +25,10 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
+## 1.0.9-alpha, June 6, 2015
+
+- Prevented saving models when ordering in [[RearrangeAction]] 
+
 ## 1.0.8-alpha, June 2, 2015
 
 - ItemOrderBehavior updated next() and previous() methods
