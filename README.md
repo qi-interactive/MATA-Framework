@@ -25,7 +25,7 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
-## 1.1.0-alpha
+## 1.1.0-alpha, June 9, 2015
 
 - Ordering refactored with more flexible grouping
 
