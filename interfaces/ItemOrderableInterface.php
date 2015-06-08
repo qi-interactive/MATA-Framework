@@ -11,7 +11,7 @@ namespace mata\interfaces;
 interface ItemOrderableInterface
 {
 
-	public function setOrder($order);
+	public function applyOrder($order);
 
     public function ordered();
 
