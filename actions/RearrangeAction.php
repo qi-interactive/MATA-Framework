@@ -21,6 +21,7 @@ class RearrangeAction extends \yii\base\Action {
 	public $modalTitle;
 	public $orderColumnName;
 	public $url;
+	public $groupingField = null;
 
 	public function init() {
 		if(empty($this->onValidationErrorHandler)) {
@@ -42,7 +43,9 @@ class RearrangeAction extends \yii\base\Action {
 
 			foreach($pks as $index => $pk) {
 				$model = $this->model->findOne($pk);
-				$model->setOrder($index+1);
+				if($this->groupingField != null)
+					$model->groupingField = $this->groupingField;
+				$model->applyOrder($index+1);
 			}
 
 			echo Json::encode(['Response' => 'OK']);
