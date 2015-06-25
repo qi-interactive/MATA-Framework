@@ -25,6 +25,10 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
+## TO BE RELEASED
+
+- Fix for ItemOrderableBehavior
+
 ## 1.1.1-alpha, June 15, 2015
 
 - Made ordering chainable

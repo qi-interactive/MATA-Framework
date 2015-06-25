@@ -238,8 +238,7 @@ class ItemOrderableBehavior extends \yii\base\Behavior implements ItemOrderableI
 
     
     if(!$owner instanceof \yii\db\ActiveQuery) {
-      $model = new $class;
-      $query = $model->find();
+      $query = $class::find();
       $query->join('INNER JOIN', 'mata_itemorder', 'mata_itemorder.DocumentId = CONCAT(:class, '.$aliasWithPk.') AND mata_itemorder.Grouping = :grouping', [':class' => $class . '-', ':grouping' => $grouping]);
       if(!empty($whereCondition))
         $query->andWhere($whereCondition, $whereParams);
