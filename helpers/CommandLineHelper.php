@@ -18,7 +18,7 @@ class CommandLineHelper {
     public static function executeInDir($command, $runInDir, &$output, &$returnValue)
     {
         $cwd = getcwd();
-        chdir(Yii::getAlias("@runtime/client-tests"));
+        chdir($runInDir);
         self::execute($command, $output, $returnValue);
         chdir($cwd);
     }
