@@ -16,11 +16,15 @@ class CommandLineHelper {
      * Command return code can be found in [$returnValue]
      * Command can be run in a directory by specifying [$runInDir]
      */
-    public static function execute($command, &$output, &$returnValue, $runInDir = null)
+    public static function executeInDir($command, $runInDir, &$output, &$returnValue)
     {
         $cwd = getcwd();
         chdir(Yii::getAlias("@runtime/client-tests"));
-        exec($command, $output, $returnValue);
+        self::execute($command, $output, $returnValue);
         chdir($cwd);
+    }
+
+    public static function execute($command, &$output, &$returnValue) {
+        exec($command, $output, $returnValue);
     }
 }
