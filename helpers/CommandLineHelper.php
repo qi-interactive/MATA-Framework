@@ -11,10 +11,9 @@ namespace mata\helpers;
 class CommandLineHelper {
 
     /**
-     * Executes a command using exec()
+     * Executes a command using exec() in a dir specified
      * Returns command output as [$output]
      * Command return code can be found in [$returnValue]
-     * Command can be run in a directory by specifying [$runInDir]
      */
     public static function executeInDir($command, $runInDir, &$output, &$returnValue)
     {
@@ -24,6 +23,11 @@ class CommandLineHelper {
         chdir($cwd);
     }
 
+    /**
+     * Executes a command using exec()
+     * Returns command output as [$output]
+     * Command return code can be found in [$returnValue]
+     */
     public static function execute($command, &$output, &$returnValue) {
         exec($command, $output, $returnValue);
     }
