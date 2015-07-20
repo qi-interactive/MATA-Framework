@@ -25,6 +25,10 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
+## 1.1.2-alpha, July 20, 2015
+
+- Fix for ItemOrderableBehavior, GoogleAnalyticsHelper, FileSystemHelper, CommandLineHelper added
+
 ## 1.1.1-alpha, June 15, 2015
 
 - Made ordering chainable
