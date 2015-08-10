@@ -1,5 +1,5 @@
 <?php
- 
+
 /**
  * @link http://www.matacms.com/
  * @copyright Copyright (c) 2015 Qi Interactive Limited
@@ -51,8 +51,8 @@ class MataModuleHelper {
 					return $reflector->getNamespaceName() . "\\";
 				}
 			}
-		}	
+		}
 
-		return $moduleFile;	
+		return $moduleFile;
 	}
 }
