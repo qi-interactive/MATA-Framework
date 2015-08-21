@@ -1,5 +1,5 @@
 <?php
- 
+
 /**
  * @link http://www.matacms.com/
  * @copyright Copyright (c) 2015 Qi Interactive Limited
@@ -21,7 +21,7 @@ class ComposerHelper {
 					continue;
 				return $autoloadDirectory;
 			}
-			
+
 		}
 	}
 
@@ -30,7 +30,7 @@ class ComposerHelper {
 			. DIRECTORY_SEPARATOR . "autoload_psr4.php");
 
 		foreach ($includeFiles as $namespace => $value) {
-			if (current($value) == $dir)
+			if (in_array($dir, $value))
 				return $namespace;
 		}
 	}

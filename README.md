@@ -1,5 +1,5 @@
 # MATA-Framework
- 
+
 =======
 MATA Framework
 ==========================================
@@ -10,13 +10,13 @@ The basic foundation block for all MATA Applications. This is where it all begin
 Installation
 ------------
 
-- Add the module using composer: 
+- Add the module using composer:
 
 ```json
 "mata/mata-framework": "~1.0.0"
 ```
 
-- An even better way is to check out a whole MATA application to start building your solution: 
+- An even better way is to check out a whole MATA application to start building your solution:
 ```json
 composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT_NAME
 ```
@@ -24,6 +24,10 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 
 Changelog
 ---------
+
+## 1.1.3-alpha, August 21, 2015
+
+- Bugfix for ComposerHelper
 
 ## 1.1.2-alpha, July 20, 2015
 
@@ -39,7 +43,7 @@ Changelog
 
 ## 1.0.9-alpha, June 6, 2015
 
-- Prevented saving models when ordering in [[RearrangeAction]] 
+- Prevented saving models when ordering in [[RearrangeAction]]
 
 ## 1.0.8-alpha, June 2, 2015
 
