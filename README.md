@@ -25,6 +25,11 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
+
+## 1.1.3.1-alpha, August 25, 2015
+
+- Bugfix sortable widget
+
 ## 1.1.3-alpha, August 21, 2015
 
 - Bugfix for ComposerHelper
