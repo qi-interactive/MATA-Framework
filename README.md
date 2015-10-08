@@ -25,6 +25,9 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
+## 1.1.3.2-alpha, October 8, 2015
+
+- Added customized SluggableBehavior and Inflector
 
 ## 1.1.3.1-alpha, August 25, 2015
 
