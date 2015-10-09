@@ -14,6 +14,8 @@ class ActiveQuery extends \yii\db\ActiveQuery {
 
 	public $handled = false;
 
+	public $initialWhere = null;
+
 	/**
 	 * Prepares for building SQL.
 	 * This event is fired by [[QueryBuilder]] when it starts to build SQL from a query object.
@@ -24,17 +26,18 @@ class ActiveQuery extends \yii\db\ActiveQuery {
 
 	public function prepare($builder) {
 		if(!$this->handled) {
+			$this->initialWhere = $this->where;
 			$this->trigger(self::EVENT_BEFORE_PREPARE_STATEMENT);
 			$this->handled = true;
 		}
-		
+
 	    return parent::prepare($builder);
 	}
 
 	/**
 	 * This function should be used for models that cannot be updated, such as Media.
 	 * Fetching such records will use cache, if available, which does not expire
-	 */ 
+	 */
 	public function cachedOne($db = null) {
 
 		$modelClass = $this->modelClass;
@@ -52,9 +55,9 @@ class ActiveQuery extends \yii\db\ActiveQuery {
 
 	    return $data;
 	}
-	
+
 	/**
-	 * Changed visibility to public 
+	 * Changed visibility to public
 	 * @param ActiveQuery $query
 	 * @return array the table name and the table alias.
 	 */

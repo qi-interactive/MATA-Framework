@@ -25,6 +25,10 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
+## 1.1.3.3-alpha, October 9, 2015
+
+- Added initialWhere property to mata\db\ActiveQuery
+
 ## 1.1.3.2-alpha, October 8, 2015
 
 - Added customized SluggableBehavior and Inflector
