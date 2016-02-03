@@ -1,5 +1,5 @@
 <?php
- 
+
 /**
  * @link http://www.matacms.com/
  * @copyright Copyright (c) 2015 Qi Interactive Limited
@@ -15,17 +15,17 @@ use yii\web\ServerErrorHttpException;
 use mata\models\ItemOrder;
 use mata\interfaces\ItemOrderableInterface;
 
-class ItemOrderableBehavior extends \yii\base\Behavior implements ItemOrderableInterface 
+class ItemOrderableBehavior extends \yii\base\Behavior implements ItemOrderableInterface
 {
 
   public $_order;
   public $groupingField = null;
 
 
-  public function events() 
+  public function events()
   {
 
-      $events = [ 
+      $events = [
         BaseActiveRecord::EVENT_AFTER_INSERT => "afterSave",
         BaseActiveRecord::EVENT_AFTER_DELETE => "afterDelete",
         // BaseActiveRecord::EVENT_AFTER_FIND => "afterFind"
@@ -75,7 +75,7 @@ class ItemOrderableBehavior extends \yii\base\Behavior implements ItemOrderableI
         }
     }
 
-    // public function afterFind(Event $event) 
+    // public function afterFind(Event $event)
     // {
 
     //   $model = $event->sender;
@@ -89,7 +89,7 @@ class ItemOrderableBehavior extends \yii\base\Behavior implements ItemOrderableI
 
     // }
 
-  public function applyOrder($order) 
+  public function applyOrder($order)
   {
 
     $model = $this->owner;
@@ -107,20 +107,20 @@ class ItemOrderableBehavior extends \yii\base\Behavior implements ItemOrderableI
         }
   }
 
-  public function getOrder() 
+  public function getOrder()
   {
       return $this->owner->_order;
     }
 
-  public function ordered($grouping = null) 
+  public function ordered($grouping = null)
   {
     return $this->prepareQuery($this->owner, $grouping);
   }
 
-  public function next($looped = false) 
+  public function next($looped = false, $whereCondition = false, $whereParams = [])
   {
     $class = get_class($this->owner);
-    
+
     $field = $this->groupingField;
     $grouping = $this->groupingField!=null ? $class . '::' . $this->groupingField . '::' . $class->$field : $class;
 
@@ -128,13 +128,21 @@ class ItemOrderableBehavior extends \yii\base\Behavior implements ItemOrderableI
     $itemOrder = new ItemOrder;
     $currentItemOrder = $itemOrder->find()->where(['DocumentId' => $this->owner->getDocumentId()->getId(), 'Grouping' => $grouping])->one();
 
+    $queryWhereCondition = 'mata_itemorder.Order > :currentOrder';
+    $queryWhereParams = [':currentOrder' => $currentItemOrder->Order];
+
+    if($whereCondition != false) {
+        $queryWhereCondition .= ' AND ' . $whereCondition;
+        $queryWhereParams = \yii\helpers\ArrayHelper::merge($queryWhereParams, $whereParams);
+    }
+
     if(!empty($currentItemOrder)) {
-      $candidate = $this->prepareQuery($this->owner, $grouping, 'mata_itemorder.Order > :currentOrder', [':currentOrder' => $currentItemOrder->Order])->one();
+      $candidate = $this->prepareQuery($this->owner, $grouping, $queryWhereCondition, $queryWhereParams)->one();
       if(!empty($candidate))
         return $candidate;
 
       // find next article
-      $candidates = $this->prepareQuery($this->owner, $grouping, 'mata_itemorder.Order > :currentOrder', [':currentOrder' => $currentItemOrder->Order])->all();
+      $candidates = $this->prepareQuery($this->owner, $grouping, $queryWhereCondition, $queryWhereParams)->all();
       if(!empty($candidates)) {
         foreach($candidates as $candidate) {
           if(!empty($candidate))
@@ -144,45 +152,14 @@ class ItemOrderableBehavior extends \yii\base\Behavior implements ItemOrderableI
 
       // find next article from begining
       if($looped) {
-        $candidates = $this->prepareQuery($this->owner, $grouping, 'mata_itemorder.Order > 0')->all();
-        if(!empty($candidates)) {
-          foreach($candidates as $candidate) {
-            if(!empty($candidate))
-              return $candidate;
+          $queryWhereCondition = 'mata_itemorder.Order > 0';
+          $queryWhereParams = [];
+
+          if($whereCondition != false) {
+              $queryWhereCondition .= ' AND ' . $whereCondition;
+              $queryWhereParams = \yii\helpers\ArrayHelper::merge($queryWhereParams, $whereParams);
           }
-        }
-      }
-    }
-
-    return null;      
-  }
-
-  public function previous($looped = false) 
-  {
-    $class = get_class($this->owner);
-    $field = $this->groupingField;
-    $grouping = $this->groupingField!=null ? $class . '::' . $this->groupingField . '::' . $class->$field : $class;
-
-    $itemOrder = new ItemOrder;
-    $currentItemOrder = $itemOrder->find()->where(['DocumentId' => $this->owner->getDocumentId()->getId(), 'Grouping' => $grouping])->one();
-
-    if(!empty($currentItemOrder)) {
-      $candidate = $this->prepareQuery($this->owner, $grouping, 'mata_itemorder.Order < :currentOrder', [':currentOrder' => $currentItemOrder->Order], 'DESC')->one();
-      if(!empty($candidate))
-        return $candidate;
-
-      // find previous article
-      $candidates = $this->prepareQuery($this->owner, $grouping, 'mata_itemorder.Order < :currentOrder', [':currentOrder' => $currentItemOrder->Order], 'DESC')->all();
-      if(!empty($candidates)) {
-        foreach($candidates as $candidate) {
-          if(!empty($candidate))
-            return $candidate;
-        }
-      }
-
-      // find previous article from end
-      if($looped) {
-        $candidates = $this->prepareQuery($this->owner, $grouping, 'mata_itemorder.Order <= (SELECT MAX(mata_itemorder.Order) FROM mata_itemorder WHERE mata_itemorder.Grouping = :grouping)', [':grouping' => $grouping], 'DESC')->all();
+        $candidates = $this->prepareQuery($this->owner, $grouping, $queryWhereCondition, $queryWhereParams)->all();
         if(!empty($candidates)) {
           foreach($candidates as $candidate) {
             if(!empty($candidate))
@@ -195,22 +172,92 @@ class ItemOrderableBehavior extends \yii\base\Behavior implements ItemOrderableI
     return null;
   }
 
-  public function first() 
+  public function previous($looped = false, $whereCondition = false, $whereParams = [])
   {
     $class = get_class($this->owner);
     $field = $this->groupingField;
     $grouping = $this->groupingField!=null ? $class . '::' . $this->groupingField . '::' . $class->$field : $class;
 
-    return $this->prepareQuery($this->owner, $grouping, 'mata_itemorder.Order > 0')->one();
+    $itemOrder = new ItemOrder;
+    $currentItemOrder = $itemOrder->find()->where(['DocumentId' => $this->owner->getDocumentId()->getId(), 'Grouping' => $grouping])->one();
+
+    $queryWhereCondition = 'mata_itemorder.Order < :currentOrder';
+    $queryWhereParams = [':currentOrder' => $currentItemOrder->Order];
+
+    if($whereCondition != false) {
+        $queryWhereCondition .= ' AND ' . $whereCondition;
+        $queryWhereParams = \yii\helpers\ArrayHelper::merge($queryWhereParams, $whereParams);
+    }
+
+    if(!empty($currentItemOrder)) {
+      $candidate = $this->prepareQuery($this->owner, $grouping, $queryWhereCondition, $queryWhereParams, 'DESC')->one();
+      if(!empty($candidate))
+        return $candidate;
+
+      // find previous article
+      $candidates = $this->prepareQuery($this->owner, $grouping, $queryWhereCondition, $queryWhereParams, 'DESC')->all();
+      if(!empty($candidates)) {
+        foreach($candidates as $candidate) {
+          if(!empty($candidate))
+            return $candidate;
+        }
+      }
+
+      // find previous article from end
+      if($looped) {
+          $queryWhereCondition = 'mata_itemorder.Order <= (SELECT MAX(mata_itemorder.Order) FROM mata_itemorder WHERE mata_itemorder.Grouping = :grouping)';
+          $queryWhereParams = [':grouping' => $grouping];
+
+          if($whereCondition != false) {
+              $queryWhereCondition .= ' AND ' . $whereCondition;
+              $queryWhereParams = \yii\helpers\ArrayHelper::merge($queryWhereParams, $whereParams);
+          }
+        $candidates = $this->prepareQuery($this->owner, $grouping, $queryWhereCondition, $queryWhereParams, 'DESC')->all();
+
+        if(!empty($candidates)) {
+          foreach($candidates as $candidate) {
+            if(!empty($candidate))
+              return $candidate;
+          }
+        }
+      }
+    }
+
+    return null;
   }
 
-  public function last() 
+  public function first($whereCondition = false, $whereParams = [])
   {
     $class = get_class($this->owner);
     $field = $this->groupingField;
     $grouping = $this->groupingField!=null ? $class . '::' . $this->groupingField . '::' . $class->$field : $class;
 
-    return $this->prepareQuery($this->owner, $grouping, 'mata_itemorder.Order = (SELECT MAX(mata_itemorder.Order) FROM mata_itemorder WHERE mata_itemorder.Grouping = :grouping)', [':grouping' => $grouping], 'DESC')->one(); 
+    $queryWhereCondition = 'mata_itemorder.Order > 0';
+    $queryWhereParams = [];
+
+    if($whereCondition != false) {
+        $queryWhereCondition .= ' AND ' . $whereCondition;
+        $queryWhereParams = \yii\helpers\ArrayHelper::merge($queryWhereParams, $whereParams);
+    }
+
+    return $this->prepareQuery($this->owner, $grouping, $queryWhereCondition, $queryWhereParams)->one();
+  }
+
+  public function last()
+  {
+    $class = get_class($this->owner);
+    $field = $this->groupingField;
+    $grouping = $this->groupingField!=null ? $class . '::' . $this->groupingField . '::' . $class->$field : $class;
+
+    $queryWhereCondition = 'mata_itemorder.Order = (SELECT MAX(mata_itemorder.Order) FROM mata_itemorder WHERE mata_itemorder.Grouping = :grouping)';
+    $queryWhereParams = [':grouping' => $grouping];
+
+    if($whereCondition != false) {
+        $queryWhereCondition .= ' AND ' . $whereCondition;
+        $queryWhereParams = \yii\helpers\ArrayHelper::merge($queryWhereParams, $whereParams);
+    }
+
+    return $this->prepareQuery($this->owner, $grouping, $queryWhereCondition, $queryWhereParams, 'DESC')->one();
   }
 
   protected function getAliasWithPk($class)
@@ -227,30 +274,31 @@ class ItemOrderableBehavior extends \yii\base\Behavior implements ItemOrderableI
         return $alias . '.' . $pk;
   }
 
-  protected function prepareQuery($owner, $grouping = null, $whereCondition = false, $whereParams = [], $sort = 'ASC') 
+  protected function prepareQuery($owner, $grouping = null, $whereCondition = false, $whereParams = [], $sort = 'ASC')
   {
     $hasModelClass = isset($owner->modelClass);
     $class = isset($owner->modelClass) ? $owner->modelClass : get_class($owner);
 
     $aliasWithPk = $this->getAliasWithPk($class);
-    if($grouping==null) 
+    if($grouping==null)
       $grouping = $class;
 
-    
+
     if(!$owner instanceof \yii\db\ActiveQuery) {
       $query = $class::find();
       $query->join('INNER JOIN', 'mata_itemorder', 'mata_itemorder.DocumentId = CONCAT(:class, '.$aliasWithPk.') AND mata_itemorder.Grouping = :grouping', [':class' => $class . '-', ':grouping' => $grouping]);
       if(!empty($whereCondition))
         $query->andWhere($whereCondition, $whereParams);
       $query->orderBy('mata_itemorder.Order ' . $sort);
-      return $query;   
+      return $query;
     }
 
     $owner->join('INNER JOIN', 'mata_itemorder', 'mata_itemorder.DocumentId = CONCAT(:class, '.$aliasWithPk.') AND mata_itemorder.Grouping = :grouping', [':class' => $class . '-', ':grouping' => $grouping]);
     if(!empty($whereCondition))
       $owner->andWhere($whereCondition, $whereParams);
     $owner->orderBy('mata_itemorder.Order ' . $sort);
-    return $owner;       
+
+    return $owner;
   }
 
 }
