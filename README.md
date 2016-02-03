@@ -25,7 +25,7 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
-## 1.1.3.4-alpha, Februrary 3, 2016
+## 1.1.3.4-alpha, February 3, 2016
 
 - Added optional conditions with parameters for next(), previous(), first() and last() methods in mata\behaviors\ItemOrderableBehavior
 
