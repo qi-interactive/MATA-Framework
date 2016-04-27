@@ -23,6 +23,7 @@ class ActiveQuery extends \yii\db\ActiveQuery {
 	 * @return MessageEvent, with [[$this]] as sender and [[$builder]] as message.
 	 */
 	const EVENT_BEFORE_PREPARE_STATEMENT = "EVENT_BEFORE_PREPARE_STATEMENT";
+	const EVENT_BEFORE_PREPARE_STATEMENT_FOR_SEARCH = "EVENT_BEFORE_PREPARE_STATEMENT_FOR_SEARCH";
 
 	public function prepare($builder) {
 		if(!$this->handled) {
