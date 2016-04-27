@@ -25,6 +25,10 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
+## 1.1.3.5-alpha, April 27, 2016
+
+- Added EVENT_BEFORE_PREPARE_STATEMENT_FOR_SEARCH in mata\db\ActiveQuery
+
 ## 1.1.3.4-alpha, February 3, 2016
 
 - Added optional conditions with parameters for next(), previous(), first() and last() methods in mata\behaviors\ItemOrderableBehavior
