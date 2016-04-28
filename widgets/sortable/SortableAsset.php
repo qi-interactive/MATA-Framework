@@ -1,5 +1,5 @@
 <?php
- 
+
 /**
  * @link http://www.matacms.com/
  * @copyright Copyright (c) 2015 Qi Interactive Limited
@@ -15,7 +15,7 @@ class SortableAsset extends \kartik\base\AssetBundle
     {
         $this->setSourcePath(__DIR__ . '/assets');
         $this->setupAssets('css', ['css/kv-sortable']);
-        $this->setupAssets('js', ['js/html.sortable']);
+        $this->setupAssets('js', ['js/kv-widgets', 'js/html.sortable', 'js/mata-sortable']);
         parent::init();
     }
 }
