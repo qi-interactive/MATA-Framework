@@ -25,6 +25,10 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
+## 1.1.3.6-alpha, April 28, 2016
+
+- Updates for mata\widgets\sortable\Sortable
+
 ## 1.1.3.5-alpha, April 27, 2016
 
 - Added EVENT_BEFORE_PREPARE_STATEMENT_FOR_SEARCH in mata\db\ActiveQuery
