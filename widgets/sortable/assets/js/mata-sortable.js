@@ -1,12 +1,9 @@
 $(window).load(function() {
 
-    $(document).on('mousedown', 'ul.sortable.grid li div.grid-item figure', function(e) {
-        if($(e.target).parents('a').length == 0)
-            $('figcaption', this).hide();
-    });
-
-    $(document).on('mouseup dragend.h5s', 'ul.sortable.grid', function() {
-        $('ul.sortable.grid li div.grid-item figure figcaption').show();
+    $(document).on('mouseenter', 'ul.sortable.grid li div.grid-item figure.effect-winston', function() {
+        $(this).addClass('hover')
+    }).on('mouseleave', 'ul.sortable.grid li div.grid-item figure.effect-winston', function() {
+        $(this).removeClass('hover')
     });
 
 });

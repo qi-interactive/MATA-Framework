@@ -25,6 +25,10 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
+## 1.1.3.7-alpha, April 29, 2016
+
+- Updates for mata\widgets\sortable\Sortable
+
 ## 1.1.3.6-alpha, April 28, 2016
 
 - Updates for mata\widgets\sortable\Sortable
