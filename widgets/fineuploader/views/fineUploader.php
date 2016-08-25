@@ -7,7 +7,7 @@ use yii\web\View;
 <div id="<?= $widget->id ?>" class="file-uploader">
 
 
-	<?php 
+	<?php
 
 	$templateId = 'qq-simple-thumbnails-template-'.$widget->id;
 
@@ -31,20 +31,21 @@ use yii\web\View;
 						  	data: {name: filename},
 						  	success: function(data) {
 						  		var result = '" . $widget->s3Folder . "/' + data.key;
-						  		keyRetrieval.success(result); 
+						  		keyRetrieval.success(result);
 						  	},
 						  	error: function() { keyRetrieval.failure(); },
 						  	dataType: 'json'
 						});
 
-						return keyRetrieval;						
+						return keyRetrieval;
 					}
 				},
+				thumbnails: " . json_encode($widget->options['thumbnails']). ",
 				multiple: " . ($widget->options['multiple'] ? 'true' : 'false') . ",
 			// Move to module settings
 				validation: {
-					allowedExtensions: ['jpg', 'jpeg', 'gif', 'png', 'pdf', 'ico'],
-					sizeLimit: 2000000
+					allowedExtensions: " . json_encode($widget->options['allowedExtensions']) . ",
+					sizeLimit: " . $widget->options['sizeLimit'] . "
 				},
 				signature: {
 					customHeaders: {'X-CSRF-Token':'" . \Yii::$app->request->getCsrfToken() . "'},
@@ -52,7 +53,7 @@ use yii\web\View;
 				},
 				showMessage: function(message) {
 					if (message != 'No files to upload.') {
-						alert(message); 
+						alert(message);
 					} else {
 						if(uploadsPending == 0)
 							form.submit();
@@ -81,10 +82,11 @@ use yii\web\View;
 					form.append(hidden);
 				}
 
+				$('" . $widget->selector . " li[qq-file-id=' + id + '] .caption-text span').text(name);
 
 				$(fileItem).find('.delete-file').on('click', function() {
 					$('" . $widget->selector . " li[qq-file-id=' + id + ']').remove();
-					
+
 					var documentId = $('input[name=\'Media[<?= $widget->Id ?>][DocumentId]\'').val();
 
 					if (documentId == null)
@@ -99,11 +101,12 @@ use yii\web\View;
 				});
 
 }).on('progress', function(event, id, fileName, loaded, total) {
-
 	$('" . $widget->selector . " .qq-upload-spinner').css({
-		'opacity': 1, 
+		'opacity': 1,
 		width : ((loaded/total)*100) + '%'
 	});
+
+	$('" . $widget->selector . " li[qq-file-id=' + id + '] .caption-text span').text(fileName);
 
 if($('" . $widget->selector . " .qq-upload-spinner')[0].style.width == '100%')
 	$('" . $widget->selector . " .qq-upload-spinner').addClass('success');
@@ -174,19 +177,28 @@ if($('" . $widget->selector . " .qq-upload-spinner')[0].style.width == '100%')
 			</span>
 			<?php
 				if ($mediaModel):
+					$fileType = substr($mediaModel->MimeType,0, strrpos($mediaModel->MimeType,'/'));
+					if(in_array($fileType, ['image', 'video'])) {
+						$imgThumbnailUrl = $mediaModel->URI;
+					}
+					else {
+						$assetBundle = \Yii::$app->getAssetManager()->getBundle(\mata\widgets\fineuploader\FineUploaderAsset::className());
+						$imgThumbnailUrl = $assetBundle->baseUrl . '/fine-uploader/placeholders/not-image-file.png';
+					}
 				?>
 				<div class="current-media">
 					<li class="qq-file-id-0 qq-upload-success" qq-file-id="0">
 					<div class="grid-item">
 						<figure class="effect-winston">
 							<div class="img-container">
-								<img class="qq-thumbnail-selector" qq-server-scale src="<?= $mediaModel->URI ?>">
+								<img class="qq-thumbnail-selector" qq-server-scale src="<?= $imgThumbnailUrl ?>">
 							</div>
 							<figcaption>
+								<div class="caption-text"><span><?= $mediaModel->Name ?></span><div class="fadding-container"></div></div>
 								<p>
 									<a href="#" class="delete-file"><span></span></a>
 								</p>
-							</figcaption>           
+							</figcaption>
 						</figure>
 					</div>
 					</li>
@@ -207,10 +219,11 @@ if($('" . $widget->selector . " .qq-upload-spinner')[0].style.width == '100%')
 								<img class="qq-thumbnail-selector" qq-server-scale>
 							</div>
 							<figcaption>
+								<div class="caption-text"><span></span><div class="fadding-container"></div></div>
 								<p>
 									<a href="#" class="delete-file"><span></span></a>
 								</p>
-							</figcaption>           
+							</figcaption>
 						</figure>
 					</div>
 					<!--

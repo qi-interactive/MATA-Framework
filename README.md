@@ -25,6 +25,10 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
+## 1.1.3.8-alpha, August 25, 2016
+
+- Updates for FineUploader widget
+
 ## 1.1.3.7-alpha, May 2, 2016
 
 - Updates for mata\widgets\sortable\Sortable
