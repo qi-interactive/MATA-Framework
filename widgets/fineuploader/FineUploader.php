@@ -1,5 +1,5 @@
 <?php
- 
+
 /**
  * @link http://www.matacms.com/
  * @copyright Copyright (c) 2015 Qi Interactive Limited
@@ -32,8 +32,11 @@ class FineUploader extends InputWidget {
     public $htmlOptions = [];
 
     public $defaultOptions = [
-        'multiple' => true
+        'multiple' => true,
+        'allowedExtensions' => ['jpg', 'jpeg', 'gif', 'png', 'pdf', 'ico'],
+        'sizeLimit' => 2000000
     ];
+
     public $events = array();
     public $default_events = array(
         'autoRetry'=>'',
@@ -71,6 +74,7 @@ class FineUploader extends InputWidget {
 
     public function init(){
         parent::init();
+
         $this->options=array_merge($this->defaultOptions, $this->options);
 
         $this->events=array_merge($this->default_events, $this->events);
@@ -97,6 +101,17 @@ class FineUploader extends InputWidget {
     }
 
     public function run() {
+
+        $assetBundle = \Yii::$app->getAssetManager()->getBundle(\mata\widgets\fineuploader\FineUploaderAsset::className());
+
+        $this->options=array_merge($this->options, [
+            'thumbnails' => [
+                'placeholders' => [
+                    'notAvailablePath' => $assetBundle->baseUrl . '/fine-uploader/placeholders/not-image-file.png'
+                ]
+            ]
+        ]);
+
         $this->selector = '#' . $this->options['id'];
 
         $this->registerPlugin();
@@ -114,7 +129,7 @@ class FineUploader extends InputWidget {
                     $mediaModel = Media::find()->where(['For' => $media])->one();
                 }
             }
-        }        
+        }
         echo $this->render($this->view, [
             "widget" => $this,
             "mediaModel" => $mediaModel
@@ -134,6 +149,6 @@ class FineUploader extends InputWidget {
      */
     protected function registerJS() {
         $options = Json::encode($this->options);
-        
+
     }
-} 
+}
