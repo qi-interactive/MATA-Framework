@@ -28,7 +28,7 @@ class ItemOrderableBehavior extends \yii\base\Behavior implements ItemOrderableI
         $events = [
             BaseActiveRecord::EVENT_AFTER_INSERT => "afterSave",
             BaseActiveRecord::EVENT_AFTER_DELETE => "afterDelete",
-            // BaseActiveRecord::EVENT_AFTER_FIND => "afterFind"
+            BaseActiveRecord::EVENT_AFTER_FIND => "afterFind"
         ];
 
         return $events;
@@ -72,19 +72,17 @@ class ItemOrderableBehavior extends \yii\base\Behavior implements ItemOrderableI
         }
     }
 
-    // public function afterFind(Event $event)
-    // {
+    public function afterFind(Event $event)
+    {
 
-    //   $model = $event->sender;
-    //   $field = $this->groupingField;
-    //   $grouping = $this->groupingField!=null ? get_class($model) . '::' . $this->groupingField . '::' . $model->$field : get_class($model);
+        $model = $event->sender;
+        $grouping = $this->getGrouping($model);
 
-    // $itemOrder = new ItemOrder;
-    //     $currentItemOrder = $itemOrder->find()->where(['DocumentId' => $model->getDocumentId()->getId(), 'Grouping' => $grouping])->one();
-    //     if($currentItemOrder != null)
-    //       $this->owner->_order = $currentItemOrder->Order;
+        $currentItemOrder = ItemOrder::find()->where(['DocumentId' => $model->getDocumentId()->getId(), 'Grouping' => $grouping])->one();
+        if($currentItemOrder != null)
+            $this->owner->_order = $currentItemOrder->Order;
 
-    // }
+    }
 
     public function applyOrder($order)
     {
