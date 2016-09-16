@@ -248,7 +248,7 @@ if($('" . $widget->selector . " .qq-upload-spinner')[0].style.width == '100%')
 			</div>
 
 			<?php if ($mediaValue): ?>
-				<input type="hidden" name="Media[<?= $widget->Id ?>][DocumentId]" id="<?php echo \yii\helpers\Html::getInputId($widget->model, $widget->attribute) ?>" value="<?= $mediaValue ?>">
+				<input type="hidden" name="Media[<?= $widget->Id ?>][DocumentId]" id="<?= $widget->Id ?>" value="<?= $mediaValue ?>">
 			<?php endif; ?>
 		</div>
 </script>

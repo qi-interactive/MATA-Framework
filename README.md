@@ -25,6 +25,10 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
+## 1.1.4.1-alpha, September 14, 2016
+
+- Updated html.sortable.js to latest version
+
 ## 1.1.4.0-alpha, September 8, 2016
 
 - Updated mata\behaviors\ItemOrderableBehavior: added afterFind() event
