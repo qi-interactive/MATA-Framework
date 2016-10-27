@@ -25,6 +25,10 @@ composer create-project --prefer-source mata/mata-application=~1.0.0 NEW_PROJECT
 Changelog
 ---------
 
+## 1.1.4.2-alpha, October 27, 2016
+
+- Changed FineUploader widget to display thumbnails only for image type media
+
 ## 1.1.4.1-alpha, September 14, 2016
 
 - Updated html.sortable.js to latest version
