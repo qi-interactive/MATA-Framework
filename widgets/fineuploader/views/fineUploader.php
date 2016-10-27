@@ -178,7 +178,7 @@ if($('" . $widget->selector . " .qq-upload-spinner')[0].style.width == '100%')
 			<?php
 				if ($mediaModel):
 					$fileType = substr($mediaModel->MimeType,0, strrpos($mediaModel->MimeType,'/'));
-					if(in_array($fileType, ['image', 'video'])) {
+					if(in_array($fileType, ['image'])) {
 						$imgThumbnailUrl = $mediaModel->URI;
 					}
 					else {
